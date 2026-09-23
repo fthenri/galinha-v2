@@ -1,0 +1,297 @@
+Effects:
+
+Bleeding · 5-20 Min damage
+
+Origami · 3-10 Min damage
+
+Hemorrhage · 5-20 Min damage
+
+Shield · Reduced damage 50%
+
+Healing · 5-10 Min heal
+
+Stun · Stun: 1 turn
+
+Iron Box · Reduced damage 20%
+
+Iron Maiden · Reduced damage 20%
+
+Strong Bleeding · 30-43 Min damage
+
+Flames · 5-15 Min damage
+
+Powerful Flames · 16-26 Min damage
+
+Cremation · 30-40 Min damage
+
+Hypothermia · 9-10 Min damage
+
+Absolute Zero · 14-15 Min damage
+
+Divine Shield · Reduced damage 70%
+
+Acid · 5-10 Min damage
+
+Poison · 15-20 Min damage
+
+Strong Acid · 11-15 Min damage
+
+Divine Acid · 20-35 Min damage
+
+Powerful Healing · 10-20 Min heal
+
+Depression · -10--15 Min heal
+
+Strong Depression · -30--45 Min heal
+
+Internal Hemorrhage · 15-25 Min damage
+
+Refilling · 5-10 Min heal 
+
+Allergic · 7-12 Min damage 
+
+Frustrated · 14-17 Min damage
+
+Protected · 100% · 4t · Reduced damage 20%
+
+Brazilian Way · 15-25 Min heal
+
+Gluing Pieces · 10-15 Min heal
+
+More Resistant · Reduced damage 40%
+
+Dense Plasma · 10-25 Min damage
+
+Supreme Cremation · 35-43 Min damage
+
+Curse · 10-20 Min damage
+
+Plasma · 1-15 Min damage
+
+Divine Plasma · 10-35 Min damage
+
+Micro Robots · 10-15 Min damage
+
+Shock · 6-15 Min damage
+
+Strong Shock · 15-25 Min damage
+
+Sandstorm · 12-17 Min damage
+
+Golem · 20-22 Min damage
+
+Radiation · 4-8 Min damage
+
+Strong Radiation · 10-14 Min damage
+
+Oxygen Suction · 10-20 Min damage
+
+Turn Into Air · Reduced damage 100%
+
+Battalion · 40-50 Min damage
+
+Mummify · 8-15 Min heal
+
+Persecution · 10-20 Min damage
+
+Necrosis · 15-20 Min damage
+
+Rigorously Bandaged · Reduced damage 20%
+
+Kevlar Wrapped · Reduced damage 50%
+
+Ink · 22-27 Min damage
+
+Black Ink · 25-35 Min damage
+
+Divine Healing · 15-25 Min heal
+
+Strong Depression · -30--45 Min heal
+
+Menstruation · -40--55 Min heal
+
+Full Heal · 80-100 Min heal
+
+Death · 70-85 Min damage
+
+Gravitational Attraction · 1-30 Min damage
+
+Solar Cremation · 55-70 Min damage
+
+Gravitational Field · 15-23 Min damage
+
+Life Steal · damage dealt = damage healed
+
+Cold Moonlight · 12-20 Min damage
+
+Possession · 20-35 Min damage
+
+Empowered Slime · Reduced damage 30%
+
+Reflection · Reflect next attack
+
+Crystallizing · 17-25 Min heal
+
+Fragility · Fragility 90%
+
+Eternal Eclipse · 60-90 Min damage
+
+Degeneration · 10-15 Min damage
+
+Zombie Attack · 18-30 Min damage
+
+Powerful Degeneration · 20-35 Min damage
+
+Infinite Healing · 160-320 Min heal
+
+Covered By Ink · 10-15 Min damage
+
+Exploding · 5-30 Min damage
+
+Redrawing · 15-25 Min heal
+
+Frightened · Fragility 35%
+
+Censored · Reduced damage 70%
+
+Hiding · Reduced damage 100%
+
+Haunted · Fragility 55%
+
+Starring · 50-80 Min heal
+
+Hypnotized · 70-120 Min damage
+
+Malnutrition · Fragility 15%
+
+Trade Blood For Food · damage dealt = damage healed
+
+Corpse Protection · Reduced damage 50%
+
+Disease · 10-15 Min damage
+
+Dissolving · 10-20 Min damage
+
+Lack of Resources · Stun: 1 turn
+
+Infinite Mirage · 40-50 Min damage
+
+Warrior Dragon Aura · 37-50 Min heal
+
+Hypnotized Music · 9-12 Min damage
+
+Barrier · block 100%
+
+Sonic Explosion · 30-40 Min damage
+
+Supreme Barrier · block 100%
+
+Final Melody · 45-75 Min damage
+
+Stellar Ruin Howl · 50-60 Min damage
+
+Transcend · Fragility 170%
+
+Aging · Fragility 240%
+
+Going Back in Time · 95-135 Min heal
+
+Going to the Future · Reduced damage 100%
+
+Cresset · 50-70 Min damage
+
+Phoenix Fire · 110-130 Min damage
+
+Fading Existence · 5-10 Min damage
+
+Regenerate Mass 1 · 5-10 Min heal
+
+Fire · 7-12 Min damage
+
+Confusion · Stun: 1 turn
+
+Erase Attacks · Reduced damage 50%
+
+Fragile Existence 1 · Fragility 35%
+
+Regenerate Mass 2 · 15-25 Min heal
+
+Cancel Attacks · Reduced damage 100%
+
+Regenerate Mass 3 · 90-125 Min heal
+
+Fragile Existence 2 · Fragility 200%
+
+White Fire · 20-40 Min damage
+
+Celestial Light · 45-50 Min heal
+
+Immaculate Aura · 100% · 1t · 50-65 Min heal
+
+Pure Flame · 100% · 2t · 30-45 Min damage
+
+Paradise Blessing · 70-90 Min heal
+
+Purifying Touch · 60-75 Min damage
+
+Veil of Sanctity · 85-135 Min heal
+
+Heavenly Healing · 260-330 Min heal
+
+Ancestral Purity · 160-200 Min damage
+
+Eternal Blessing · 45-55 Min damage
+
+Illuminated Destiny · 55-75 Min damage
+
+Double Stun · Stun: 2 turns
+
+Guardian Shield · Reduced damage 75%
+
+Guardian Heal · 80-200 Min heal
+
+Supreme Guardian Shield · Reduced damage 120%
+
+Divine Guardian Shield · Reduced damage 200%
+
+Ascension to Heaven · 40-45 Min heal
+
+Divine Trial · 45-65 Min damage
+
+Infernal Bite · 60-80 Min damage
+
+Salvation Aura · 100-165 Min heal
+
+Knife · -30--30 Min heal
+
+Berserker Fragility · Fragility 300%
+
+Silent Tide · 30-50 Min damage
+
+Cthulhu Regeneration · 60-100 Min heal
+
+Cthulhu Bite · 80-120 Min damage
+
+Cthulhu Dream · 120-200 Min heal
+
+Dagon · 185-300 Min heal
+
+Cthulhu Fury · 150-320 Min damage
+
+Cthulhu Ascension · 250-450 Min heal
+
+Orbital Bleeding · 10-15 Min damage
+
+Keyblade Bleeding · 12-25 Min damage
+
+Cursed Blessing · -15--15 Min heal
+
+Glass Mantle · Fragility 50%
+
+Critical Exposure · Fragility 75%
+
+Imminent Impact · Fragility 150%
+
+Sonic Rush · 100-150 Min damage
+
+Healing Surge · 150-350 Min heal
