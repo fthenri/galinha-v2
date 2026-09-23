@@ -36,3 +36,4 @@ if 'data.rebirths ?? 0' not in text:
 with codecs.open('src/logic/Galo.ts', 'w', 'utf-8') as f:
     f.write(text)
 print("Done logic")
+

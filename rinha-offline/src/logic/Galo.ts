@@ -20,6 +20,7 @@ export class Galo {
     caminho_imagem: string;
     skills_equipadas: (Skill | null)[];
     rebirths: number;
+    evolucao_desbloqueada?: boolean;
     efeitos: Record<string, number>;
 
     constructor(
@@ -31,7 +32,8 @@ export class Galo {
         tipo: string = "Normal",
         skills_equipadas: (Skill | null)[] | null = null,
         efeitos: Record<string, number> | null = null,
-        rebirths: number = 0
+        rebirths: number = 0,
+        evolucao_desbloqueada: boolean = false
     ) {
         this.nome = nome;
         this.tipo = tipo;
@@ -43,6 +45,7 @@ export class Galo {
         this.skills_equipadas = skills_equipadas ?? [];
         this.efeitos = efeitos ?? {};
         this.rebirths = rebirths;
+        this.evolucao_desbloqueada = evolucao_desbloqueada;
     }
 
     obterSkillsDesbloqueadas(): { level: number, skill: Skill }[] {
@@ -57,7 +60,9 @@ export class Galo {
         for (const [lvlStr, skill] of Object.entries(skillsDb)) {
             const lvl = parseInt(lvlStr, 10);
             if (lvl <= this.nivel) {
-                desbloqueadas.push({ level: lvl, skill });
+                if (!skill.isEvoluida || this.evolucao_desbloqueada) {
+                    desbloqueadas.push({ level: lvl, skill });
+                }
             }
         }
         
@@ -224,7 +229,8 @@ export class Galo {
             xp: this.xp,
             skills_equipadas: this.skills_equipadas,
             efeitos: this.efeitos,
-            rebirths: this.rebirths
+            rebirths: this.rebirths,
+            evolucao_desbloqueada: this.evolucao_desbloqueada
         };
     }
 
@@ -243,7 +249,8 @@ export class Galo {
             data.tipo ?? "Normal",
             skills_equipadas,
             data.efeitos ? { ...data.efeitos } : {},
-            data.rebirths ?? 0
+            data.rebirths ?? 0,
+            data.evolucao_desbloqueada ?? false
         );
     }
 }

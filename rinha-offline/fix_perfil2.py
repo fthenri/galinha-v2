@@ -41,3 +41,4 @@ text = text.replace('''        })}
 with codecs.open('src/components/Perfil.tsx', 'w', 'utf-8') as f:
     f.write(text)
 print("Done Perfil")
+

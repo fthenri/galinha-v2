@@ -14,3 +14,4 @@ text = text.replace('export const calcularValorVenda', funcs)
 with codecs.open('src/store/jogadorStore.ts', 'w', 'utf-8') as f:
     f.write(text)
 print("Done store utilities")
+

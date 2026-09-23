@@ -5,6 +5,7 @@ export type Skill = {
   efeito?: string;
   chance?: number;
   turnos?: number;
+  isEvoluida?: boolean;
 };
 
 export type GaloData = {
@@ -12,7 +13,7 @@ export type GaloData = {
   raridade: string;
   hp_base: number;
   caminho_imagem: string;
-  skills: Record<number, Skill>;
+  skills: Record<number | string, Skill>;
 };
 
 export const GALOS_DB: Record<string, GaloData> = {
@@ -39,7 +40,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Double peck", "min": 30, "max": 35, "efeito": "Hemorrhage", "chance": 100, "turnos": 3},
       24: {"nome": "Divine kick", "min": 35, "max": 50, "efeito": "Shield", "chance": 100, "turnos": 4},
       30: {"nome": "Peck of the gods", "min": 50, "max": 70},
-      31: {"nome": "Labere Volans", "min": 55, "max": 90},
+      "30_evo": {"isEvoluida": true, "nome": "Labere Volans", "min": 55, "max": 90},
     }
   },
   "Rooster Paper": {
@@ -65,7 +66,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Catastrophe", "min": 5, "max": 100},
       24: {"nome": "Paper big bang", "min": 55, "max": 63},
       30: {"nome": "Paper universe", "min": 65, "max": 90},
-      31: {"nome": "Aeterna Munus", "min": 65, "max": 95, "efeito": "Origami", "chance": 100, "turnos": 3},
+      "30_evo": {"isEvoluida": true, "nome": "Aeterna Munus", "min": 65, "max": 95, "efeito": "Origami", "chance": 100, "turnos": 3},
     }
   },
   "Rooster Rock": {
@@ -91,7 +92,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Obsidian rain", "min": 56, "max": 63},
       25: {"nome": "Brick throw", "min": 35, "max": 45, "efeito": "Stun", "chance": 50, "turnos": 1},
       30: {"nome": "Meteors", "min": 50, "max": 75},
-      31: {"nome": "Saxum Griseus", "min": 50, "max": 55, "efeito": "Stun", "chance": 80, "turnos": 1},
+      "30_evo": {"isEvoluida": true, "nome": "Saxum Griseus", "min": 50, "max": 55, "efeito": "Stun", "chance": 80, "turnos": 1},
     }
   },
   "Rooster Cutting": {
@@ -117,7 +118,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "One hundred thousand scissor cuts", "min": 40, "max": 50, "efeito": "Iron Maiden", "chance": 100, "turnos": 2},
       25: {"nome": "Guillotine", "min": 25, "max": 35, "efeito": "Iron Maiden", "chance": 100, "turnos": 2},
       30: {"nome": "Excalibur", "min": 55, "max": 80, "efeito": "Bleeding", "chance": 100, "turnos": 2},
-      31: {"nome": "Ferrum Forfex", "min": 50, "max": 65, "efeito": "Strong Bleeding", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Ferrum Forfex", "min": 50, "max": 65, "efeito": "Strong Bleeding", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Fire": {
@@ -143,7 +144,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Stellar cremation", "min": 18, "max": 23, "efeito": "Cremation", "chance": 100, "turnos": 1},
       24: {"nome": "Sun", "min": 58, "max": 65},
       30: {"nome": "Star", "min": 20, "max": 30, "efeito": "Powerful Flames", "chance": 100, "turnos": 2},
-      31: {"nome": "Stella Alba", "min": 35, "max": 65, "efeito": "Flames", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Stella Alba", "min": 35, "max": 65, "efeito": "Flames", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Ice": {
@@ -169,7 +170,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Infinite ice", "min": 56, "max": 58},
       25: {"nome": "Absolute zero", "min": 40, "max": 45, "efeito": "Absolute Zero", "chance": 100, "turnos": 2},
       30: {"nome": "Icy meteor", "min": 16, "max": 36, "efeito": "Stun", "chance": 65, "turnos": 1},
-      31: {"nome": "Gehenna Glacies", "min": 35, "max": 65, "efeito": "Hypothermia", "chance": 100, "turnos": 3},
+      "30_evo": {"isEvoluida": true, "nome": "Gehenna Glacies", "min": 35, "max": 65, "efeito": "Hypothermia", "chance": 100, "turnos": 3},
     }
   },
   "Rooster Metal": {
@@ -195,7 +196,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Condensed metal", "min": 40, "max": 55},
       25: {"nome": "Metallization", "min": 30, "max": 40, "efeito": "Hemorrhage", "chance": 100, "turnos": 3},
       30: {"nome": "Divine shield", "min": 20, "max": 30, "efeito": "Divine Shield", "chance": 100, "turnos": 2},
-      31: {"nome": "Ferrum Mors", "min": 65, "max": 70},
+      "30_evo": {"isEvoluida": true, "nome": "Ferrum Mors", "min": 65, "max": 70},
     }
   },
   "Rooster Acid": {
@@ -221,7 +222,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Acid ocean", "min": 30, "max": 35, "efeito": "Strong Acid", "chance": 100, "turnos": 2},
       24: {"nome": "Divine acid", "min": 1, "max": 5, "efeito": "Divine Acid", "chance": 100, "turnos": 3},
       30: {"nome": "Poison rain", "min": 10, "max": 30, "efeito": "Poison", "chance": 100, "turnos": 2},
-      31: {"nome": "Summi Corrosionis", "min": 20, "max": 40, "efeito": "Divine Acid", "chance": 100, "turnos": 3},
+      "30_evo": {"isEvoluida": true, "nome": "Summi Corrosionis", "min": 20, "max": 40, "efeito": "Divine Acid", "chance": 100, "turnos": 3},
     }
   },
   "Rooster Wood": {
@@ -247,7 +248,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Animal attack", "min": 55, "max": 64},
       25: {"nome": "Forest of devastating trees", "min": 58, "max": 67},
       30: {"nome": "World tree", "min": 30, "max": 55, "efeito": "Powerful Healing", "chance": 100, "turnos": 3},
-      31: {"nome": "Yggdrasil", "min": 55, "max": 70, "efeito": "Powerful Healing", "chance": 100, "turnos": 3},
+      "30_evo": {"isEvoluida": true, "nome": "Yggdrasil", "min": 55, "max": 70, "efeito": "Powerful Healing", "chance": 100, "turnos": 3},
     }
   },
   "Rooster Rubber": {
@@ -273,7 +274,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Rubber fury", "min": 54, "max": 67},
       25: {"nome": "Elastic fist", "min": 56, "max": 65},
       30: {"nome": "Rubber world", "min": 53, "max": 85},
-      31: {"nome": "Gear five", "min": 65, "max": 95},
+      "30_evo": {"isEvoluida": true, "nome": "Gear five", "min": 65, "max": 95},
     }
   },
   "Rooster Emo": {
@@ -299,7 +300,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Depressing double peck", "min": 40, "max": 45, "efeito": "Hemorrhage", "chance": 100, "turnos": 3},
       25: {"nome": "The end of happiness", "min": 50, "max": 70},
       30: {"nome": "Chiyoku", "min": 105, "max": 145, "efeito": "Strong Depression", "chance": 100, "turnos": 2},
-      31: {"nome": "Sofia", "min": 130, "max": 165, "efeito": "Strong Depression", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Sofia", "min": 130, "max": 165, "efeito": "Strong Depression", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Dinosaur": {
@@ -325,7 +326,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Enhanced claws", "min": 42, "max": 50, "efeito": "Bleeding", "chance": 100, "turnos": 2},
       25: {"nome": "Strong tail", "min": 53, "max": 60},
       30: {"nome": "Extinction", "min": 65, "max": 90},
-      31: {"nome": "Chicxulub", "min": 22, "max": 50, "efeito": "Internal Hemorrhage", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Chicxulub", "min": 22, "max": 50, "efeito": "Internal Hemorrhage", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Skeleton": {
@@ -351,7 +352,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Magma arrow", "min": 35, "max": 45, "efeito": "Powerful Flames", "chance": 100, "turnos": 2},
       25: {"nome": "Skeleton army", "min": 52, "max": 63},
       30: {"nome": "Final arrow", "min": 30, "max": 50, "efeito": "Internal Hemorrhage", "chance": 100, "turnos": 2},
-      31: {"nome": "Rupium Cranium", "min": 45, "max": 59, "efeito": "Poison", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Rupium Cranium", "min": 45, "max": 59, "efeito": "Poison", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Plush": {
@@ -377,7 +378,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       24: {"nome": "Enhanced stuffing", "min": 25, "max": 28, "efeito": "Refilling", "chance": 100, "turnos": 3},
       25: {"nome": "Bubble wrap", "min": 50, "max": 60},
       30: {"nome": "Makeshift fix", "min": 20, "max": 37, "efeito": "Brazilian Way", "chance": 100, "turnos": 3},
-      31: {"nome": "Bestia Pupa", "min": 43, "max": 75, "efeito": "Protected", "chance": 100, "turnos": 4},
+      "30_evo": {"isEvoluida": true, "nome": "Bestia Pupa", "min": 43, "max": 75, "efeito": "Protected", "chance": 100, "turnos": 4},
     }
   },
   "Rooster Porcelain": {
@@ -403,7 +404,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       25: {"nome": "Infinite porcelain", "min": 50, "max": 70},
       29: {"nome": "Deep cut", "min": 35, "max": 45, "efeito": "Internal Hemorrhage", "chance": 30, "turnos": 2},
       30: {"nome": "Super glue", "min": 40, "max": 45, "efeito": "Gluing Pieces", "chance": 100, "turnos": 3},
-      31: {"nome": "Argentum Prandium", "min": 50, "max": 75, "efeito": "Gluing Pieces", "chance": 100, "turnos": 4},
+      "30_evo": {"isEvoluida": true, "nome": "Argentum Prandium", "min": 50, "max": 75, "efeito": "Gluing Pieces", "chance": 100, "turnos": 4},
     }
   },
   "Rooster Hologram": {
@@ -429,7 +430,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Energy claws", "min": 43, "max": 47},
       25: {"nome": "Plasma tail", "min": 42, "max": 45, "efeito": "Dense Plasma", "chance": 100, "turnos": 2},
       30: {"nome": "Deletion", "min": 66, "max": 89},
-      31: {"nome": "Final healing echo", "min": 45, "max": 55},
+      "30_evo": {"isEvoluida": true, "nome": "Final healing echo", "min": 45, "max": 55},
     }
   },
   "Rooster Invisible": {
@@ -455,7 +456,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Uncertain destiny", "min": 50, "max": 60},
       24: {"nome": "Phantom collapse", "min": 54, "max": 63},
       30: {"nome": "Invisible dimension", "min": 55, "max": 99},
-      31: {"nome": "Final mist", "min": 45, "max": 65, "efeito": "Powerful Healing", "chance": 100, "turnos": 3},
+      "30_evo": {"isEvoluida": true, "nome": "Final mist", "min": 45, "max": 65, "efeito": "Powerful Healing", "chance": 100, "turnos": 3},
     }
   },
   "Rooster Magma": {
@@ -481,7 +482,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Magma planet", "min": 7, "max": 22, "efeito": "Supreme Cremation", "chance": 100, "turnos": 1},
       24: {"nome": "Molten sun", "min": 69, "max": 88},
       30: {"nome": "Magmatic star", "min": 66, "max": 78, "efeito": "Powerful Flames", "chance": 100, "turnos": 2},
-      31: {"nome": "Calidun Vesuvius", "min": 12, "max": 27, "efeito": "Supreme Cremation", "chance": 100, "turnos": 1},
+      "30_evo": {"isEvoluida": true, "nome": "Calidun Vesuvius", "min": 12, "max": 27, "efeito": "Supreme Cremation", "chance": 100, "turnos": 1},
     }
   },
   "Rooster Water": {
@@ -507,7 +508,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Aquatic storm", "min": 56, "max": 65},
       25: {"nome": "Tsunami", "min": 39, "max": 88, "efeito": "Stun", "chance": 40, "turnos": 1},
       30: {"nome": "Spiritual water", "min": 66, "max": 100},
-      31: {"nome": "Divinum Diluvium", "min": 88, "max": 122},
+      "30_evo": {"isEvoluida": true, "nome": "Divinum Diluvium", "min": 88, "max": 122},
     }
   },
   "Rooster Nature": {
@@ -533,7 +534,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Divine root", "min": 61, "max": 66},
       25: {"nome": "Divine tree", "min": 22, "max": 34, "efeito": "Powerful Healing", "chance": 100, "turnos": 3},
       30: {"nome": "Angelic fruit", "min": 78, "max": 100},
-      31: {"nome": "Fructus Angelici", "min": 22, "max": 44, "efeito": "Poison", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Fructus Angelici", "min": 22, "max": 44, "efeito": "Poison", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Plasma": {
@@ -559,7 +560,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       21: {"nome": "Double plasma beam", "min": 34, "max": 39, "efeito": "Plasma", "chance": 100, "turnos": 2},
       24: {"nome": "Divine plasma burst", "min": 22, "max": 34, "efeito": "Divine Plasma", "chance": 100, "turnos": 2},
       30: {"nome": "Power explosion", "min": 56, "max": 88},
-      31: {"nome": "Ardens Ictu", "min": 39, "max": 56, "efeito": "Divine Plasma", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Ardens Ictu", "min": 39, "max": 56, "efeito": "Divine Plasma", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Robotic": {
@@ -585,7 +586,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Empower", "min": 42, "max": 66, "efeito": "Shield", "chance": 100, "turnos": 4},
       25: {"nome": "Nuclear bomb", "min": 56, "max": 78},
       30: {"nome": "Hydrogen bomb", "min": 66, "max": 88},
-      31: {"nome": "Ultima Automaton", "min": 34, "max": 49, "efeito": "Micro Robots", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Ultima Automaton", "min": 34, "max": 49, "efeito": "Micro Robots", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Electric": {
@@ -611,7 +612,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Lightning kick", "min": 5, "max": 12, "efeito": "Stun", "chance": 70, "turnos": 1},
       24: {"nome": "Divine lightning", "min": 66, "max": 78},
       30: {"nome": "Black lightning", "min": 71, "max": 93},
-      31: {"nome": "Fulmen Infernalis", "min": 44, "max": 56, "efeito": "Shock", "chance": 100, "turnos": 5},
+      "30_evo": {"isEvoluida": true, "nome": "Fulmen Infernalis", "min": 44, "max": 56, "efeito": "Shock", "chance": 100, "turnos": 5},
     }
   },
   "Rooster Explosion": {
@@ -637,7 +638,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Explosive army", "min": 66, "max": 83},
       24: {"nome": "Explosive bullets", "min": 66, "max": 100},
       30: {"nome": "Subatomic explosion", "min": 88, "max": 110},
-      31: {"nome": "Tandem Explosio", "min": 100, "max": 127},
+      "30_evo": {"isEvoluida": true, "nome": "Tandem Explosio", "min": 100, "max": 127},
     }
   },
   "Rooster Sand": {
@@ -663,7 +664,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Desert wave", "min": 56, "max": 61},
       25: {"nome": "Black sand tempest", "min": 39, "max": 49, "efeito": "Sandstorm", "chance": 100, "turnos": 2},
       30: {"nome": "Sandification", "min": 66, "max": 100},
-      31: {"nome": "Desertum Procellae", "min": 22, "max": 44, "efeito": "Golem", "chance": 100, "turnos": 3},
+      "30_evo": {"isEvoluida": true, "nome": "Desertum Procellae", "min": 22, "max": 44, "efeito": "Golem", "chance": 100, "turnos": 3},
     }
   },
   "Rooster Radioactive": {
@@ -689,7 +690,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Radioactive cloud", "min": 34, "max": 39, "efeito": "Strong Radiation", "chance": 100, "turnos": 4},
       24: {"nome": "Subatomic toxicity", "min": 56, "max": 93},
       30: {"nome": "Proton fusion", "min": 56, "max": 78, "efeito": "Radiation", "chance": 100, "turnos": 4},
-      31: {"nome": "Letalis Uranium", "min": 56, "max": 83, "efeito": "Strong Radiation", "chance": 100, "turnos": 4},
+      "30_evo": {"isEvoluida": true, "nome": "Letalis Uranium", "min": 56, "max": 83, "efeito": "Strong Radiation", "chance": 100, "turnos": 4},
     }
   },
   "Rooster Samurai": {
@@ -715,7 +716,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Do", "min": 26, "max": 39, "efeito": "Hemorrhage", "chance": 100, "turnos": 3},
       25: {"nome": "Demonic katana", "min": 61, "max": 78},
       30: {"nome": "Men", "min": 34, "max": 56, "efeito": "Internal Hemorrhage", "chance": 100, "turnos": 2},
-      31: {"nome": "Iaponica Impetum", "min": 61, "max": 78},
+      "30_evo": {"isEvoluida": true, "nome": "Iaponica Impetum", "min": 61, "max": 78},
     }
   },
   "Rooster Air": {
@@ -741,7 +742,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Suck oxygen", "min": 19, "max": 22, "efeito": "Oxygen Suction", "chance": 100, "turnos": 2},
       25: {"nome": "Dense air", "min": 42, "max": 56, "efeito": "Hemorrhage", "chance": 100, "turnos": 3},
       30: {"nome": "Turn into wind", "min": 5, "max": 12, "efeito": "Turn Into Air", "chance": 100, "turnos": 2},
-      31: {"nome": "Anhelus", "min": 39, "max": 61, "efeito": "Oxygen Suction", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Anhelus", "min": 39, "max": 61, "efeito": "Oxygen Suction", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Military": {
@@ -767,7 +768,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Bazooka", "min": 1, "max": 154},
       25: {"nome": "General", "min": 56, "max": 83},
       30: {"nome": "Battalion", "min": 12, "max": 17, "efeito": "Battalion", "chance": 100, "turnos": 2},
-      31: {"nome": "Autonomous Trebuchet", "min": 39, "max": 56, "efeito": "Internal Hemorrhage", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Autonomous Trebuchet", "min": 39, "max": 56, "efeito": "Internal Hemorrhage", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Mummy": {
@@ -793,7 +794,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Advanced mummification", "min": 22, "max": 49, "efeito": "Mummify", "chance": 100, "turnos": 1},
       25: {"nome": "Anubis judgment", "min": 66, "max": 83},
       30: {"nome": "Pharaoh's ascension", "min": 1, "max": 166},
-      31: {"nome": "Pharao Revixit", "min": 27, "max": 66, "efeito": "Kevlar Wrapped", "chance": 100, "turnos": 5},
+      "30_evo": {"isEvoluida": true, "nome": "Pharao Revixit", "min": 27, "max": 66, "efeito": "Kevlar Wrapped", "chance": 100, "turnos": 5},
     }
   },
   "Rooster Painter": {
@@ -819,7 +820,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Colorful tide", "min": 47, "max": 57},
       25: {"nome": "Black ink tempest", "min": 17, "max": 27, "efeito": "Black Ink", "chance": 100, "turnos": 2},
       30: {"nome": "Final masterpiece", "min": 64, "max": 83},
-      31: {"nome": "Final enhanced ink explosion", "min": 39, "max": 49, "efeito": "Ink", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Final enhanced ink explosion", "min": 39, "max": 49, "efeito": "Ink", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Egirl": {
@@ -845,7 +846,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Aesthetic strike", "min": 61, "max": 70},
       25: {"nome": "Cutie!", "min": 51, "max": 62, "efeito": "Divine Healing", "chance": 100, "turnos": 3},
       30: {"nome": "Menstruation", "min": 127, "max": 149, "efeito": "Menstruation", "chance": 100, "turnos": 2},
-      31: {"nome": "Menopause", "min": 160, "max": 166, "efeito": "Menstruation", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Menopause", "min": 160, "max": 166, "efeito": "Menstruation", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Light": {
@@ -871,7 +872,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Illumination", "min": 10, "max": 20, "efeito": "Full Heal", "chance": 100, "turnos": 1},
       25: {"nome": "Spirit bomb", "min": 1, "max": 150},
       30: {"nome": "Empowered prism", "min": 60, "max": 90},
-      31: {"nome": "Tenebris Lumen", "min": 60, "max": 85, "efeito": "Full Heal", "chance": 100, "turnos": 1},
+      "30_evo": {"isEvoluida": true, "nome": "Tenebris Lumen", "min": 60, "max": 85, "efeito": "Full Heal", "chance": 100, "turnos": 1},
     }
   },
   "Rooster Darkness": {
@@ -897,7 +898,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Total darkness", "min": 50, "max": 60},
       25: {"nome": "Black hole", "min": 65, "max": 75},
       30: {"nome": "Hyper black hole", "min": 70, "max": 95},
-      31: {"nome": "Damnatio Finalis", "min": 105, "max": 135},
+      "30_evo": {"isEvoluida": true, "nome": "Damnatio Finalis", "min": 105, "max": 135},
     }
   },
   "Rooster Arcane": {
@@ -923,7 +924,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Gravity", "min": 20, "max": 25, "efeito": "Gravitational Attraction", "chance": 100, "turnos": 2},
       25: {"nome": "Sun", "min": 1, "max": 2, "efeito": "Solar Cremation", "chance": 100, "turnos": 1},
       30: {"nome": "Cataclysm", "min": 50, "max": 85},
-      31: {"nome": "Novissime Impetum", "min": 80, "max": 120},
+      "30_evo": {"isEvoluida": true, "nome": "Novissime Impetum", "min": 80, "max": 120},
     }
   },
   "Rooster Gravity": {
@@ -949,7 +950,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "NodeModules", "min": 50, "max": 80},
       24: {"nome": "Infinite gravity", "min": 60, "max": 83, "efeito": "Gravitational Attraction", "chance": 100, "turnos": 2},
       30: {"nome": "Overwhelming repulsion", "min": 80, "max": 130},
-      31: {"nome": "Gravitas Stellaris", "min": 100, "max": 210},
+      "30_evo": {"isEvoluida": true, "nome": "Gravitas Stellaris", "min": 100, "max": 210},
     }
   },
   "Rooster Sun": {
@@ -975,7 +976,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Garnet star", "min": 20, "max": 30, "efeito": "Supreme Cremation", "chance": 100, "turnos": 1},
       25: {"nome": "Charged particles", "min": 30, "max": 55, "efeito": "Powerful Flames", "chance": 100, "turnos": 2},
       30: {"nome": "Betelgeuse", "min": 60, "max": 100},
-      31: {"nome": "Canis Majoris", "min": 35, "max": 50, "efeito": "Solar Cremation", "chance": 100, "turnos": 1},
+      "30_evo": {"isEvoluida": true, "nome": "Canis Majoris", "min": 35, "max": 50, "efeito": "Solar Cremation", "chance": 100, "turnos": 1},
     }
   },
   "Rooster Vampiric": {
@@ -1001,7 +1002,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Suck blood", "min": 40, "max": 40, "efeito": "Life Steal", "chance": 100, "turnos": 1},
       25: {"nome": "Demonic bite", "min": 20, "max": 25, "efeito": "Internal Hemorrhage", "chance": 100, "turnos": 2},
       30: {"nome": "Suck life", "min": 50, "max": 50, "efeito": "Life Steal", "chance": 100, "turnos": 1},
-      31: {"nome": "Sanguis Hauri", "min": 95, "max": 135},
+      "30_evo": {"isEvoluida": true, "nome": "Sanguis Hauri", "min": 95, "max": 135},
     }
   },
   "Rooster Moon": {
@@ -1027,7 +1028,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Full moon", "min": 50, "max": 60},
       25: {"nome": "Moon curse", "min": 40, "max": 60, "efeito": "Hypothermia", "chance": 100, "turnos": 3},
       30: {"nome": "Eclipse", "min": 50, "max": 95},
-      31: {"nome": "Umbra Lunae", "min": 100, "max": 135},
+      "30_evo": {"isEvoluida": true, "nome": "Umbra Lunae", "min": 100, "max": 135},
     }
   },
   "Rooster Dragon": {
@@ -1053,7 +1054,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Cremating breath", "min": 20, "max": 35, "efeito": "Cremation", "chance": 100, "turnos": 1},
       25: {"nome": "Time roar", "min": 60, "max": 80},
       30: {"nome": "Supreme dragon", "min": 60, "max": 100},
-      31: {"nome": "Draco Fortis", "min": 100, "max": 135},
+      "30_evo": {"isEvoluida": true, "nome": "Draco Fortis", "min": 100, "max": 135},
     }
   },
   "Rooster Ninja": {
@@ -1079,7 +1080,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Shuriken rain", "min": 60, "max": 70},
       26: {"nome": "Teleport", "min": 55, "max": 80},
       30: {"nome": "Secret technique", "min": 50, "max": 110},
-      31: {"nome": "Gladius Iaponica", "min": 60, "max": 100, "efeito": "Internal Hemorrhage", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Gladius Iaponica", "min": 60, "max": 100, "efeito": "Internal Hemorrhage", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Ghost": {
@@ -1105,7 +1106,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Grim scream", "min": 20, "max": 35, "efeito": "Stun", "chance": 40, "turnos": 1},
       25: {"nome": "Powerful curse", "min": 23, "max": 35, "efeito": "Curse", "chance": 100, "turnos": 3},
       30: {"nome": "Soul explosion", "min": 45, "max": 85},
-      31: {"nome": "Maledictus Spiritus", "min": 85, "max": 135},
+      "30_evo": {"isEvoluida": true, "nome": "Maledictus Spiritus", "min": 85, "max": 135},
     }
   },
   "Rooster Slime": {
@@ -1131,7 +1132,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Viscous armor", "min": 40, "max": 47, "efeito": "Shield", "chance": 100, "turnos": 4},
       25: {"nome": "Reflection", "min": 18, "max": 25, "efeito": "Reflection", "chance": 40, "turnos": 1},
       30: {"nome": "Slime world", "min": 50, "max": 80, "efeito": "Divine Healing", "chance": 100, "turnos": 3},
-      31: {"nome": "Viridi Bitumine", "min": 95, "max": 145},
+      "30_evo": {"isEvoluida": true, "nome": "Viridi Bitumine", "min": 95, "max": 145},
     }
   },
   "Rooster Crystal": {
@@ -1157,7 +1158,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Crystallize world", "min": 25, "max": 30, "efeito": "Crystallizing", "chance": 100, "turnos": 2},
       25: {"nome": "Offensive crystallize", "min": 10, "max": 18, "efeito": "Crystallizing", "chance": 100, "turnos": 2},
       30: {"nome": "Defensive crystallize", "min": 25, "max": 38, "efeito": "Crystallizing", "chance": 100, "turnos": 2},
-      31: {"nome": "Crystalline attack", "min": 40, "max": 55, "efeito": "Crystallizing", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Crystalline attack", "min": 40, "max": 55, "efeito": "Crystallizing", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Giant": {
@@ -1183,7 +1184,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Titanic fortification", "min": 66, "max": 73},
       25: {"nome": "Colossus strike", "min": 70, "max": 80},
       30: {"nome": "Uncontrollable strength", "min": 50, "max": 100},
-      31: {"nome": "Absolute power", "min": 95, "max": 115},
+      "30_evo": {"isEvoluida": true, "nome": "Absolute power", "min": 95, "max": 115},
     }
   },
   "Rooster Angelic": {
@@ -1209,7 +1210,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Planetary devastation", "min": 80, "max": 100},
       25: {"nome": "Michael's spear", "min": 100, "max": 130},
       30: {"nome": "Swarm of a thousand spears", "min": 100, "max": 180},
-      31: {"nome": "Divinum Vultus", "min": 130, "max": 180, "efeito": "Full Heal", "chance": 100, "turnos": 1},
+      "30_evo": {"isEvoluida": true, "nome": "Divinum Vultus", "min": 130, "max": 180, "efeito": "Full Heal", "chance": 100, "turnos": 1},
     }
   },
   "Rooster Demonic": {
@@ -1235,7 +1236,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Hell on earth", "min": 80, "max": 103},
       25: {"nome": "Lucifer's sword", "min": 100, "max": 130},
       30: {"nome": "Mass destruction", "min": 100, "max": 200},
-      31: {"nome": "Daemon Immortalitas", "min": 130, "max": 170, "efeito": "Fragility", "chance": 100, "turnos": 4},
+      "30_evo": {"isEvoluida": true, "nome": "Daemon Immortalitas", "min": 130, "max": 170, "efeito": "Fragility", "chance": 100, "turnos": 4},
     }
   },
   "Rooster Eclipse": {
@@ -1261,7 +1262,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Solar cremation", "min": 55, "max": 75, "efeito": "Solar Cremation", "chance": 100, "turnos": 1},
       25: {"nome": "Moon miracle", "min": 70, "max": 85, "efeito": "Powerful Healing", "chance": 100, "turnos": 3},
       30: {"nome": "Eternal eclipse", "min": 70, "max": 95, "efeito": "Eternal Eclipse", "chance": 100, "turnos": 5},
-      31: {"nome": "Latonae Haeredes", "min": 100, "max": 180, "efeito": "Eternal Eclipse", "chance": 100, "turnos": 5},
+      "30_evo": {"isEvoluida": true, "nome": "Latonae Haeredes", "min": 100, "max": 180, "efeito": "Eternal Eclipse", "chance": 100, "turnos": 5},
     }
   },
   "Rooster Zombie": {
@@ -1287,7 +1288,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Degenerative peck", "min": 72, "max": 85, "efeito": "Degeneration", "chance": 100, "turnos": 2},
       25: {"nome": "Zombie flesh", "min": 90, "max": 120},
       30: {"nome": "Infinite flesh shield", "min": 30, "max": 50, "efeito": "Infinite Healing", "chance": 100, "turnos": 1},
-      31: {"nome": "Inmortui Renascentis", "min": 110, "max": 150, "efeito": "Zombie Attack", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Inmortui Renascentis", "min": 110, "max": 150, "efeito": "Zombie Attack", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Wizard": {
@@ -1313,7 +1314,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Enhanced magic prison", "min": 40, "max": 65, "efeito": "Stun", "chance": 85, "turnos": 1},
       25: {"nome": "Mythical blessing", "min": 65, "max": 90, "efeito": "Full Heal", "chance": 100, "turnos": 1},
       30: {"nome": "Nuclear magic", "min": 125, "max": 210},
-      31: {"nome": "Nepotis Hecaten", "min": 190, "max": 270},
+      "30_evo": {"isEvoluida": true, "nome": "Nepotis Hecaten", "min": 190, "max": 270},
     }
   },
   "Rooster Drawing": {
@@ -1339,7 +1340,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Pact", "min": 50, "max": 80, "efeito": "Haunted", "chance": 100, "turnos": 3},
       25: {"nome": "Protagonism", "min": 45, "max": 60, "efeito": "Starring", "chance": 100, "turnos": 3},
       30: {"nome": "Subliminal message", "min": 40, "max": 50, "efeito": "Hypnotized", "chance": 100, "turnos": 4},
-      31: {"nome": "Sine Tempore Art", "min": 100, "max": 120, "efeito": "Haunted", "chance": 100, "turnos": 3},
+      "30_evo": {"isEvoluida": true, "nome": "Sine Tempore Art", "min": 100, "max": 120, "efeito": "Haunted", "chance": 100, "turnos": 3},
     }
   },
   "Rooster Apocalypse": {
@@ -1365,7 +1366,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       20: {"nome": "Universal Exchange", "min": 60, "max": 60, "efeito": "Trade Blood For Food", "chance": 100, "turnos": 1},
       25: {"nome": "Extreme Poverty", "min": 30, "max": 55, "efeito": "Lack of Resources", "chance": 80, "turnos": 1},
       30: {"nome": "End Times", "min": 50, "max": 250},
-      31: {"nome": "Pestilentiae Sine Tempus", "min": 160, "max": 300},
+      "30_evo": {"isEvoluida": true, "nome": "Pestilentiae Sine Tempus", "min": 160, "max": 300},
     }
   },
   "Rooster Panda": {
@@ -1391,7 +1392,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Dimensional Fissure", "min": 65, "max": 82},
       25: {"nome": "Warrior Dragon Aura", "min": 60, "max": 65, "efeito": "Warrior Dragon Aura", "chance": 100, "turnos": 2},
       30: {"nome": "Skadoosh", "min": 45, "max": 70, "efeito": "Stun", "chance": 100, "turnos": 1},
-      31: {"nome": "Enhanced infinite mirage", "min": 95, "max": 110, "efeito": "Infinite Mirage", "chance": 100, "turnos": 3},
+      "30_evo": {"isEvoluida": true, "nome": "Enhanced infinite mirage", "min": 95, "max": 110, "efeito": "Infinite Mirage", "chance": 100, "turnos": 3},
     }
   },
   "Rooster Tire": {
@@ -1417,7 +1418,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       24: {"nome": "Running over", "min": 114, "max": 149},
       26: {"nome": "Kicking", "min": 133, "max": 165},
       30: {"nome": "Running over", "min": 165, "max": 209},
-      31: {"nome": "Ancestral Kicking", "min": 209, "max": 336},
+      "30_evo": {"isEvoluida": true, "nome": "Ancestral Kicking", "min": 209, "max": 336},
     }
   },
   "Rooster Musician": {
@@ -1443,7 +1444,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Mortal Frequency", "min": 70, "max": 82},
       25: {"nome": "Reflecting music", "min": 5, "max": 15, "efeito": "Reflection", "chance": 100, "turnos": 1},
       30: {"nome": "Final Crescendo", "min": 50, "max": 65, "efeito": "Supreme Barrier", "chance": 100, "turnos": 1},
-      31: {"nome": "Final melody", "min": 95, "max": 110, "efeito": "Final Melody", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Final melody", "min": 95, "max": 110, "efeito": "Final Melody", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Lupus": {
@@ -1483,7 +1484,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Age infinitely", "min": 90, "max": 150, "efeito": "Aging", "chance": 100, "turnos": 4},
       25: {"nome": "Travel to the future", "min": 100, "max": 150, "efeito": "Going to the Future", "chance": 100, "turnos": 5},
       30: {"nome": "Timeline destruction", "min": 1, "max": 800},
-      31: {"nome": "Primum Tempus", "min": 300, "max": 500, "efeito": "Going Back in Time", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Primum Tempus", "min": 300, "max": 500, "efeito": "Going Back in Time", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Phoenix": {
@@ -1509,7 +1510,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Eternal phoenix", "min": 95, "max": 105, "efeito": "Solar Cremation", "chance": 100, "turnos": 1},
       25: {"nome": "Phoenix of cremation", "min": 110, "max": 115, "efeito": "Cresset", "chance": 100, "turnos": 2},
       30: {"nome": "Phoenix fire", "min": 120, "max": 140, "efeito": "Phoenix Fire", "chance": 100, "turnos": 2},
-      31: {"nome": "Aquila Damnationis", "min": 200, "max": 250, "efeito": "Phoenix Fire", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Aquila Damnationis", "min": 200, "max": 250, "efeito": "Phoenix Fire", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Existential": {
@@ -1574,7 +1575,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Veil of Holiness", "min": 70, "max": 85, "efeito": "Veil of Sanctity", "chance": 100, "turnos": 1},
       25: {"nome": "Bright Arrow", "min": 180, "max": 250},
       30: {"nome": "Healing from Heaven", "min": 165, "max": 180, "efeito": "Heavenly Healing", "chance": 100, "turnos": 2},
-      31: {"nome": "Ancestral Purity", "min": 225, "max": 300, "efeito": "Ancestral Purity", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Ancestral Purity", "min": 225, "max": 300, "efeito": "Ancestral Purity", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Grail": {
@@ -1600,7 +1601,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Golden Eternity", "min": 100, "max": 140, "efeito": "Supreme Barrier", "chance": 100, "turnos": 1},
       25: {"nome": "Illuminated Destiny", "min": 120, "max": 160, "efeito": "Illuminated Destiny", "chance": 100, "turnos": 2},
       30: {"nome": "Final Judgment", "min": 215, "max": 325},
-      31: {"nome": "Supreme Resurrection", "min": 90, "max": 110, "efeito": "Double Stun", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Supreme Resurrection", "min": 90, "max": 110, "efeito": "Double Stun", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Shield": {
@@ -1626,7 +1627,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       23: {"nome": "Guardian's audacity", "min": 120, "max": 130},
       25: {"nome": "Guardian's pinnacle", "min": 120, "max": 130, "efeito": "Guardian Heal", "chance": 100, "turnos": 2},
       30: {"nome": "Guardian's Supreme Shield", "min": 110, "max": 130, "efeito": "Supreme Guardian Shield", "chance": 100, "turnos": 5},
-      31: {"nome": "Guardian's divine Shield", "min": 145, "max": 225, "efeito": "Divine Guardian Shield", "chance": 100, "turnos": 5},
+      "30_evo": {"isEvoluida": true, "nome": "Guardian's divine Shield", "min": 145, "max": 225, "efeito": "Divine Guardian Shield", "chance": 100, "turnos": 5},
     }
   },
   "Rooster Vortex": {
@@ -1652,7 +1653,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       24: {"nome": "Arcane Devastation", "min": 146, "max": 190},
       26: {"nome": "Ether Collapse", "min": 170, "max": 210},
       30: {"nome": "Primordial Rift", "min": 211, "max": 266},
-      31: {"nome": "Ethereal Ancestral Vortex", "min": 267, "max": 429},
+      "30_evo": {"isEvoluida": true, "nome": "Ethereal Ancestral Vortex", "min": 267, "max": 429},
     }
   },
   "Rooster Nephilim": {
@@ -1678,7 +1679,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Sunlight Blade", "min": 55, "max": 65, "efeito": "Reflection", "chance": 100, "turnos": 1},
       25: {"nome": "Gaze of Tenebris", "min": 125, "max": 165},
       30: {"nome": "Holy Grail", "min": 230, "max": 400, "efeito": "Supreme Barrier", "chance": 100, "turnos": 1},
-      31: {"nome": "Evolved Holy Grail", "min": 320, "max": 450},
+      "30_evo": {"isEvoluida": true, "nome": "Evolved Holy Grail", "min": 320, "max": 450},
     }
   },
   "Rooster Berserker": {
@@ -1704,7 +1705,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Flaming Blade", "min": 90, "max": 115, "efeito": "Solar Cremation", "chance": 100, "turnos": 1},
       25: {"nome": "Gaze of Chaos", "min": 135, "max": 170},
       30: {"nome": "Blood Ritual", "min": 140, "max": 150, "efeito": "Berserker Fragility", "chance": 100, "turnos": 4},
-      31: {"nome": "Danão", "min": 200, "max": 500},
+      "30_evo": {"isEvoluida": true, "nome": "Danão", "min": 200, "max": 500},
     }
   },
   "Rooster Ctulhu": {
@@ -1730,7 +1731,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Cut of R'lyeh", "min": 75, "max": 105, "efeito": "Supreme Barrier", "chance": 100, "turnos": 1},
       25: {"nome": "Call of Dagon", "min": 80, "max": 90, "efeito": "Dagon", "chance": 100, "turnos": 2},
       30: {"nome": "Awakening of Cthulhu", "min": 100, "max": 135, "efeito": "Cthulhu Fury", "chance": 100, "turnos": 2},
-      31: {"nome": "Awakening of Ancient Cthulhu", "min": 150, "max": 250, "efeito": "Cthulhu Ascension", "chance": 100, "turnos": 2},
+      "30_evo": {"isEvoluida": true, "nome": "Awakening of Ancient Cthulhu", "min": 150, "max": 250, "efeito": "Cthulhu Ascension", "chance": 100, "turnos": 2},
     }
   },
   "Rooster Lingering Will": {
@@ -1756,7 +1757,7 @@ export const GALOS_DB: Record<string, GaloData> = {
       22: {"nome": "Imminent Impact", "min": 65, "max": 90, "efeito": "Imminent Impact", "chance": 100, "turnos": 3},
       25: {"nome": "Sonic Charge", "min": 70, "max": 85, "efeito": "Sonic Rush", "chance": 100, "turnos": 2},
       30: {"nome": "Healing Surge", "min": 140, "max": 200, "efeito": "Healing Surge", "chance": 100, "turnos": 2},
-      31: {"nome": "Extinction Reflex", "min": 150, "max": 500, "efeito": "Reflection", "chance": 50, "turnos": 1},
+      "30_evo": {"isEvoluida": true, "nome": "Extinction Reflex", "min": 150, "max": 500, "efeito": "Reflection", "chance": 50, "turnos": 1},
     }
   },
 };

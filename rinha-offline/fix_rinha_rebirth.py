@@ -16,3 +16,4 @@ if bad_line in text:
 with codecs.open('src/components/Rinha.tsx', 'w', 'utf-8') as f:
     f.write(text)
 print("Done Rinha")
+
