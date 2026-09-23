@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useJogadorStore, calcularBonusTrial } from '../store/jogadorStore';
 import { GALOS_DB } from '../data/galosDb';
 import { EFEITOS_DADOS } from '../data/efeitosDb';
 import { formatarEfeitoString } from '../utils/formatters';
@@ -39,8 +40,9 @@ const renderNomeGalo = (nome: string, raridade: string) => {
   return <>{nome}</>;
 };
 
-export default function Codex() {
+export default function Galinheiro() {
   const [galoSelecionado, setGaloSelecionado] = useState<string | null>(null);
+  const trialsPorClasse = useJogadorStore(s => s.trialsPorClasse);
 
   if (galoSelecionado && GALOS_DB[galoSelecionado]) {
     const galo = GALOS_DB[galoSelecionado];
@@ -95,6 +97,17 @@ export default function Codex() {
                 </div>
               </div>
             )}
+            
+            {(() => {
+              const trialsAtual = trialsPorClasse[galoSelecionado] || 0;
+              const bonus = calcularBonusTrial(trialsAtual);
+              return (
+                <div className="flex flex-col bg-zinc-800/40 border border-zinc-700 rounded-lg p-3 my-4 w-full max-w-md">
+                  <span className="text-sm font-bold text-zinc-200 mb-1">Trials de {galoSelecionado}: {trialsAtual}/20</span>
+                  <span className="text-xs text-zinc-400">Bônus: +{(bonus.dano * 100).toFixed(0)}% Dano | +{(bonus.vida * 100).toFixed(0)}% Vida</span>
+                </div>
+              );
+            })()}
           </div>
         </div>
 
@@ -140,10 +153,24 @@ export default function Codex() {
   }
 
   const nomes = Object.keys(GALOS_DB);
+  const activeTrials = Object.entries(trialsPorClasse || {}).filter(([_, val]) => val > 0);
 
   return (
     <div className="p-6 flex flex-col items-center max-w-5xl mx-auto w-full">
-      <h2 className="text-3xl font-bold mb-8 w-full text-left">Codex</h2>
+      <h2 className="text-3xl font-bold mb-4 w-full text-left">Galinheiro</h2>
+
+      {activeTrials.length > 0 && (
+        <div className="w-full bg-zinc-800 border border-zinc-700 rounded-xl p-4 mb-8 flex flex-col gap-2">
+            <h3 className="text-lg font-bold text-zinc-300">Progresso de Trials (Bônus Globais)</h3>
+            <div className="flex flex-wrap gap-2 mt-2">
+                {activeTrials.map(([chave, nivel]) => (
+                    <span key={chave} className="px-3 py-1 bg-zinc-900 border border-zinc-600 rounded-md text-sm font-bold text-cyan-400">
+                        Trial de {chave}: {nivel}/20
+                    </span>
+                ))}
+            </div>
+        </div>
+      )}
       
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 w-full">
         {nomes.map(nome => {

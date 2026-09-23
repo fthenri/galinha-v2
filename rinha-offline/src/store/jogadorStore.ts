@@ -33,6 +33,14 @@ export const calcularValorVenda = (galo: Galo): { valor: number, moeda: "moedas"
     };
 };
 
+export const calcularNivelInimigoTrial = (trialsAtual: number) => 15 + (trialsAtual * 7);
+export const calcularBonusTrial = (trialsAtual: number) => { 
+    return { 
+        dano: Math.min(trialsAtual, 10) * 0.04, 
+        vida: Math.max(0, trialsAtual - 10) * 0.06 
+    }; 
+};
+
 export interface JogadorState {
     nome: string;
     moedas: number;
@@ -42,15 +50,18 @@ export interface JogadorState {
     autoRevive: boolean;
     galos: Galo[];
     galoAtivoIndex: number;
+    trialsPorClasse: Record<string, number>;
     
     lojaDiaria: ItemLoja[];
     lojaAtualizacao: number;
     pityBronze: number;
     pityGold: number;
     pityEmerald: number;
+    isTrialMode: boolean;
 
     adicionarGalo: (galo: Galo) => void;
     setGaloAtivo: (index: number) => void;
+    setTrialMode: (val: boolean) => void;
     atualizarLoja: (loja: ItemLoja[], atualizacao: number) => void;
     comprarItemLoja: (index: number) => void;
     gastarMoeda: (valor: number, tipo: "moedas" | "galo_coins") => boolean;
@@ -62,6 +73,7 @@ export interface JogadorState {
     darRebirth: (galoIndex: number) => void;
     desbloquearEvolucao: (galoIndex: number) => void;
     equiparItem: (galoIndex: number, itemId: string | null) => void;
+    registrarVitoriaTrial: (chave: string) => void;
 }
 
 // O middleware persist salva o estado automaticamente no localStorage.
@@ -78,12 +90,14 @@ export const useJogadorStore = create<JogadorState>()(
             autoRevive: false,
             galos: [new Galo("Rooster Normal", 100, "assets/galos/00_2.png", 1, 0, "Basic")],
             galoAtivoIndex: 0,
+            trialsPorClasse: {},
             
             lojaDiaria: [],
             lojaAtualizacao: 0,
             pityBronze: 0,
             pityGold: 0,
             pityEmerald: 0,
+            isTrialMode: false,
 
             adicionarGalo: (galo) => set((state) => {
                 const novosGalos = [...state.galos, galo];
@@ -94,6 +108,7 @@ export const useJogadorStore = create<JogadorState>()(
             }),
 
             setGaloAtivo: (index) => set({ galoAtivoIndex: index }),
+            setTrialMode: (val) => set({ isTrialMode: val }),
 
             atualizarLoja: (loja, atualizacao) => set({ lojaDiaria: loja, lojaAtualizacao: atualizacao }),
 
@@ -214,6 +229,16 @@ export const useJogadorStore = create<JogadorState>()(
                     galos[galoIndex].item_equipado = itemId;
                 }
                 return { galos };
+            }),
+            registrarVitoriaTrial: (chave) => set((state) => {
+                const atual = state.trialsPorClasse[chave] || 0;
+                if (atual >= 20) return state;
+                return {
+                    trialsPorClasse: {
+                        ...state.trialsPorClasse,
+                        [chave]: atual + 1
+                    }
+                };
             })
         }),
         {

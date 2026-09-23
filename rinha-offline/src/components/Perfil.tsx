@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useJogadorStore, calcularNivelRebirth } from '../store/jogadorStore';
+import { useJogadorStore, calcularNivelRebirth, calcularBonusTrial, calcularNivelInimigoTrial } from '../store/jogadorStore';
 import { Galo } from '../logic/Galo';
 import { GALOS_DB } from '../data/galosDb';
 import { META_TIPOS } from '../data/tiposDb';
 
 import { ITENS_DB } from '../data/itensDb';
 
-function GaloCard({ galo, galoIndex, isAtivo, onEquipar, onOpenEvolucao, onOpenRebirth, onOpenItem }: { galo: Galo, galoIndex: number, isAtivo: boolean, onEquipar: () => void, onOpenEvolucao: (idx: number) => void, onOpenRebirth: (idx: number) => void, onOpenItem: (idx: number) => void }) {
+function GaloCard({ galo, galoIndex, isAtivo, onEquipar, onOpenEvolucao, onOpenRebirth, onOpenItem, onOpenTrial }: { galo: Galo, galoIndex: number, isAtivo: boolean, onEquipar: () => void, onOpenEvolucao: (idx: number) => void, onOpenRebirth: (idx: number) => void, onOpenItem: (idx: number) => void, onOpenTrial: (idx: number) => void }) {
   const alterarSkillSlot = useJogadorStore(s => s.alterarSkillSlot);
   const equiparItem = useJogadorStore(s => s.equiparItem);
   const desbloqueadas = [...galo.obterSkillsDesbloqueadas()].sort((a, b) => a.level - b.level);
@@ -155,6 +155,12 @@ function GaloCard({ galo, galoIndex, isAtivo, onEquipar, onOpenEvolucao, onOpenR
       >
         Evolução
       </button>
+      <button
+        onClick={() => onOpenTrial(galoIndex)}
+        className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold py-2 rounded-lg mt-2 w-full hover:from-cyan-500 hover:to-blue-500 shadow-lg transition-all"
+      >
+        Trial do Tipo
+      </button>
     </>
   );
 
@@ -180,6 +186,7 @@ export default function Perfil() {
   const [modalEvolucao, setModalEvolucao] = useState<number | null>(null);
   const [modalRebirth, setModalRebirth] = useState<number | null>(null);
   const [modalItemGaloIndex, setModalItemGaloIndex] = useState<number | null>(null);
+  const [modalTrialGalo, setModalTrialGalo] = useState<number | null>(null);
 
   return (
     <div className="p-6 flex flex-col items-center">
@@ -203,6 +210,7 @@ export default function Perfil() {
             onOpenEvolucao={setModalEvolucao}
             onOpenRebirth={setModalRebirth}
             onOpenItem={setModalItemGaloIndex}
+            onOpenTrial={setModalTrialGalo}
           />
         ))}
 
@@ -330,6 +338,58 @@ export default function Perfil() {
           </div>
         </div>
       )}
+
+      {modalTrialGalo !== null && (() => {
+          const galo = galos[modalTrialGalo];
+          const trialsAtual = useJogadorStore.getState().trialsPorClasse[galo.nome] || 0;
+          const bonus = calcularBonusTrial(trialsAtual);
+          const bloqueado = trialsAtual >= 20 || galo.nivel < 15;
+          
+          return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+              <div className="bg-zinc-900 border border-zinc-700 p-6 rounded-2xl w-full max-w-md flex flex-col items-center text-center shadow-2xl">
+                <h2 className="text-3xl font-bold text-white mb-2">Trial de {galo.nome}</h2>
+                <p className="text-zinc-400 mb-6">Vença desafios desta classe para conceder bônus globais para todos os galos da mesma espécie.</p>
+
+                <div className="w-full bg-zinc-800 rounded-xl p-4 mb-4 border border-zinc-700/50">
+                  <h3 className="text-lg font-bold text-zinc-300 mb-2">Progresso Atual</h3>
+                  <div className="text-2xl font-black text-cyan-400 mb-4">{trialsAtual} / 20</div>
+                  <div className="flex justify-between w-full text-sm text-zinc-400">
+                    <span>Bônus de Dano: <strong className="text-green-400">{(bonus.dano * 100).toFixed(0)}%</strong></span>
+                    <span>Bônus de Vida: <strong className="text-green-400">{(bonus.vida * 100).toFixed(0)}%</strong></span>
+                  </div>
+                </div>
+                
+                {galo.nivel < 15 && (
+                    <div className="w-full p-3 rounded-lg mb-6 font-bold bg-red-500/20 text-red-400">
+                        Requer Nível 15 para participar
+                    </div>
+                )}
+
+                <div className="w-full flex gap-4">
+                  <button 
+                    onClick={() => setModalTrialGalo(null)}
+                    className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 px-4 rounded-xl transition-all"
+                  >
+                    Cancelar
+                  </button>
+                  <button 
+                    disabled={bloqueado}
+                    onClick={() => {
+                        useJogadorStore.getState().setTrialMode(true);
+                        setGaloAtivo(modalTrialGalo);
+                        setModalTrialGalo(null);
+                        window.dispatchEvent(new CustomEvent('changeTab', { detail: { tab: 'treino' } }));
+                    }}
+                    className={`flex-1 font-bold py-3 px-4 rounded-xl transition-all ${bloqueado ? 'bg-cyan-900/50 text-cyan-500/50 cursor-not-allowed' : 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg hover:scale-105'}`}
+                  >
+                    {trialsAtual >= 20 ? 'Maximizada' : 'Iniciar Trial'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+      })()}
 
       </div>
     </div>

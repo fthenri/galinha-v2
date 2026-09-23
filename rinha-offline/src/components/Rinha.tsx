@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useJogadorStore, calcularMultiplicadorRebirth } from '../store/jogadorStore';
+import { useJogadorStore, calcularMultiplicadorRebirth, calcularBonusTrial, calcularNivelInimigoTrial } from '../store/jogadorStore';
 import { Galo } from '../logic/Galo';
 import { GALOS_DB } from '../data/galosDb';
 import { BUFFS } from '../logic/efeitos';
@@ -122,25 +122,34 @@ export default function Rinha() {
 
     const iniciarLoop = async () => {
         // Inicializar hp atual igual ao max
-        meuGalo.hp_max = Math.floor(((GALOS_DB[meuGalo.nome]?.hp_base || 100) + ((meuGalo.nivel - 1) * 12)) * calcularMultiplicadorRebirth(meuGalo.rebirths || 0));
+        const trialsAtual = useJogadorStore.getState().trialsPorClasse[meuGalo.nome] || 0;
+        const bonusTrial = calcularBonusTrial(trialsAtual);
+        const hpBaseOriginal = Math.floor(((GALOS_DB[meuGalo.nome]?.hp_base || 100) + ((meuGalo.nivel - 1) * 12)) * calcularMultiplicadorRebirth(meuGalo.rebirths || 0));
+        meuGalo.hp_max = Math.floor(hpBaseOriginal * (1 + bonusTrial.vida));
         meuGalo.hp_atual = meuGalo.hp_max;
 
         const sleep = (ms: number) => new Promise(r => setTimeout(r, ms * 1000));
 
         while (isMounted.current) {
+            const isTrial = useJogadorStore.getState().isTrialMode;
             const dificuldade = difRinhaRef.current;
             const nivelBase = meuGalo.nivel;
             const raridadeJogador = GALOS_DB[meuGalo.nome]?.raridade || "Common";
             const pesoJogador = PESOS_RARIDADE[raridadeJogador] || 1;
 
             let galosPermitidos: string[] = [];
-            for (const [nome, dados] of Object.entries(GALOS_DB)) {
-                const pesoInim = PESOS_RARIDADE[dados.raridade || "Common"] || 1;
-                if (dificuldade === "Facil" && pesoInim <= 5) galosPermitidos.push(nome);
-                else if (dificuldade === "Medio" && pesoInim >= 2) galosPermitidos.push(nome);
-                else if (dificuldade === "Dificil" && pesoInim >= 3) galosPermitidos.push(nome);
-                else if (dificuldade === "Extremo" && pesoInim >= 4) galosPermitidos.push(nome);
-                else if (dificuldade === "Insano" && pesoInim >= 5) galosPermitidos.push(nome);
+            
+            if (isTrial) {
+                galosPermitidos.push(meuGalo.nome);
+            } else {
+                for (const [nome, dados] of Object.entries(GALOS_DB)) {
+                    const pesoInim = PESOS_RARIDADE[dados.raridade || "Common"] || 1;
+                    if (dificuldade === "Facil" && pesoInim <= 5) galosPermitidos.push(nome);
+                    else if (dificuldade === "Medio" && pesoInim >= 2) galosPermitidos.push(nome);
+                    else if (dificuldade === "Dificil" && pesoInim >= 3) galosPermitidos.push(nome);
+                    else if (dificuldade === "Extremo" && pesoInim >= 4) galosPermitidos.push(nome);
+                    else if (dificuldade === "Insano" && pesoInim >= 5) galosPermitidos.push(nome);
+                }
             }
             if (galosPermitidos.length === 0) galosPermitidos = Object.keys(GALOS_DB);
 
@@ -149,11 +158,24 @@ export default function Rinha() {
             const pesoInimigo = PESOS_RARIDADE[dadosInimigo.raridade || "Common"] || 1;
 
             const configDif = CONFIG_DIFICULDADE[dificuldade] || CONFIG_DIFICULDADE.Facil;
-            let nivelInimigo = configDif.calcNivel(nivelBase);
-            if (dificuldade === "Facil" && pesoInimigo > pesoJogador) {
-                nivelInimigo = Math.max(1, nivelInimigo - (pesoInimigo - pesoJogador));
+            
+            let nivelInimigo = 0;
+            let rebirthsInimigo = 0;
+            let inimigoEvoluido = false;
+
+            if (isTrial) {
+                const trialsAtualLoop = useJogadorStore.getState().trialsPorClasse[meuGalo.nome] || 0;
+                nivelInimigo = calcularNivelInimigoTrial(trialsAtualLoop);
+                rebirthsInimigo = meuGalo.rebirths || 0;
+                inimigoEvoluido = false;
+            } else {
+                nivelInimigo = configDif.calcNivel(nivelBase);
+                if (dificuldade === "Facil" && pesoInimigo > pesoJogador) {
+                    nivelInimigo = Math.max(1, nivelInimigo - (pesoInimigo - pesoJogador));
+                }
+                rebirthsInimigo = configDif.calcRebirths(meuGalo.rebirths || 0);
+                inimigoEvoluido = configDif.inimigoEvoluido || false;
             }
-            const rebirthsInimigo = configDif.calcRebirths(meuGalo.rebirths || 0);
 
             const hpInimigoSemRebirth = dadosInimigo.hp_base + ((nivelInimigo - 1) * 12);
             const hpInimigoComRebirth = Math.floor(hpInimigoSemRebirth * calcularMultiplicadorRebirth(rebirthsInimigo));
@@ -168,7 +190,7 @@ export default function Rinha() {
                 null,
                 null,
                 rebirthsInimigo,
-                configDif.inimigoEvoluido || false
+                inimigoEvoluido
             );
             novoInimigo.hp_atual = hpInimigoComRebirth;
             
@@ -212,7 +234,10 @@ export default function Rinha() {
                 if (podeAtacar) {
                     const resAtaque = atacante.atacar();
                     const nomeSkill = resAtaque[0];
-                    const danoAtaque = resAtaque[1];
+                    let danoAtaque = resAtaque[1];
+                    if (atacante === meuGalo) {
+                        danoAtaque = Math.floor(danoAtaque * (1 + bonusTrial.dano));
+                    }
                     const efeito = resAtaque[2];
 
                     const foiRefletido = (defensor.efeitos["Reflection"] || 0) > 0;
@@ -267,34 +292,47 @@ export default function Rinha() {
             if (!isMounted.current) return;
 
             if (meuGalo.hp_atual > 0) {
-                const xpBase = 34;
-                const configDif = CONFIG_DIFICULDADE[difRinhaRef.current] || CONFIG_DIFICULDADE.Facil;
-                const xpGanho = Math.floor(configDif.calcXp(xpBase));
-                const moedasGanhas = 6;
+                if (isTrial) {
+                    useJogadorStore.getState().registrarVitoriaTrial(meuGalo.nome);
+                    useJogadorStore.getState().setTrialMode(false);
+                    adicionarLog(`Trial de ${meuGalo.nome} Concluída!\nVoltando ao treino normal...`);
+                    forceUpdate();
+                    await sleep(parseFloat(velRinhaRef.current) * 2);
+                } else {
+                    const xpBase = 34;
+                    const configDif = CONFIG_DIFICULDADE[difRinhaRef.current] || CONFIG_DIFICULDADE.Facil;
+                    const xpGanho = Math.floor(configDif.calcXp(xpBase));
+                    const moedasGanhas = 6;
 
-                meuGalo.ganharXp(xpGanho);
-                const state = useJogadorStore.getState();
-                useJogadorStore.setState({ 
-                    moedas: state.moedas + moedasGanhas,
-                    galos: [...state.galos] // Dispara re-render da store
-                });
+                    meuGalo.ganharXp(xpGanho);
+                    const state = useJogadorStore.getState();
+                    useJogadorStore.setState({ 
+                        moedas: state.moedas + moedasGanhas,
+                        galos: [...state.galos] // Dispara re-render da store
+                    });
 
-                adicionarLog(`VocÃª venceu!\n+${moedasGanhas} Moedas | +${xpGanho} XP\nProcurando prÃ³ximo...`);
-                forceUpdate();
-                await sleep(parseFloat(velRinhaRef.current) * 2);
+                    adicionarLog(`Você venceu!\n+${moedasGanhas} Moedas | +${xpGanho} XP\nProcurando próximo...`);
+                    forceUpdate();
+                    await sleep(parseFloat(velRinhaRef.current) * 2);
+                }
             } else {
-                if (autoReviveRef.current) {
-                    adicionarLog(`O teu galo foi derrotado...\nAuto-Revive ativado! Curando e procurando prÃ³ximo...`);
+                if (isTrial) {
+                    useJogadorStore.getState().setTrialMode(false);
+                    adicionarLog(`Você falhou na Trial de ${meuGalo.nome}. Treino encerrado.`);
+                    setTreinoEncerrado(true);
+                    forceUpdate();
+                } else if (autoReviveRef.current) {
+                    adicionarLog(`O teu galo foi derrotado...\nAuto-Revive ativado! Curando e procurando próximo...`);
                     forceUpdate();
                     await sleep(parseFloat(velRinhaRef.current) * 2);
                     continue;
+                } else {
+                    adicionarLog(`O teu galo foi derrotado... Treino encerrado.`);
+                    setTreinoEncerrado(true);
+                    forceUpdate();
                 }
 
-                adicionarLog(`O teu galo foi derrotado... Treino encerrado.`);
-                setTreinoEncerrado(true);
-                forceUpdate();
-
-                // Idle loop aguardando usuÃ¡rio clicar em reiniciar
+                // Idle loop aguardando usuário clicar em reiniciar
                 let reiniciarAgora = false;
                 while (isMounted.current) {
                     if (solicitarReiniciar.current) {
