@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useJogadorStore } from '../store/jogadorStore';
+import { useJogadorStore, calcularMultiplicadorRebirth } from '../store/jogadorStore';
 import { Galo } from '../logic/Galo';
 import { GALOS_DB } from '../data/galosDb';
 import { BUFFS } from '../logic/efeitos';
@@ -72,7 +72,7 @@ export default function Rinha() {
 
     const iniciarLoop = async () => {
         // Inicializar hp atual igual ao max
-        meuGalo.hp_max = (GALOS_DB[meuGalo.nome]?.hp_base || 100) + ((meuGalo.nivel - 1) * 12);
+        meuGalo.hp_max = Math.floor(((GALOS_DB[meuGalo.nome]?.hp_base || 100) + ((meuGalo.nivel - 1) * 12)) * calcularMultiplicadorRebirth(meuGalo.rebirths || 0));
         meuGalo.hp_atual = meuGalo.hp_max;
 
         const sleep = (ms: number) => new Promise(r => setTimeout(r, ms * 1000));

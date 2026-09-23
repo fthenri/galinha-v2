@@ -1,4 +1,4 @@
-import { useJogadorStore } from '../store/jogadorStore';
+import { useJogadorStore, calcularNivelRebirth } from '../store/jogadorStore';
 import { Galo } from '../logic/Galo';
 import { GALOS_DB } from '../data/galosDb';
 import { META_TIPOS } from '../data/tiposDb';
@@ -62,7 +62,7 @@ function GaloCard({ galo, galoIndex, isAtivo, onEquipar }: { galo: Galo, galoInd
         <span className={`px-2 py-1 rounded-md text-xs font-bold ${META_TIPOS[galo.tipo]?.corFundo || 'bg-zinc-900'} ${META_TIPOS[galo.tipo]?.corTexto || 'text-zinc-300'}`}>
           {META_TIPOS[galo.tipo]?.icone || ''} {galo.tipo}
         </span>
-        <span className="px-2 py-1 rounded-md text-xs font-bold bg-zinc-900 text-zinc-300">Nível: {galo.nivel}</span>
+        <span className="px-2 py-1 rounded-md text-xs font-bold bg-zinc-900 text-zinc-300">Nível: {galo.nivel} | RB: {galo.rebirths || 0}</span>
       </div>
       <p className="text-red-400 font-bold mb-4">HP: {galo.hp_max}</p>
       
@@ -103,6 +103,14 @@ function GaloCard({ galo, galoIndex, isAtivo, onEquipar }: { galo: Galo, galoInd
           );
         })}
       </div>
+
+      <button
+        onClick={() => useJogadorStore.getState().darRebirth(index)}
+        disabled={galo.nivel < calcularNivelRebirth(galo.rebirths || 0)}
+        className={`bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-2 rounded-lg mt-4 w-full ${galo.nivel < calcularNivelRebirth(galo.rebirths || 0) ? 'opacity-50 cursor-not-allowed' : 'hover:from-purple-500 hover:to-indigo-500'}`}
+      >
+        Rebirth (Lvl {calcularNivelRebirth(galo.rebirths || 0)})
+      </button>
     </>
   );
 

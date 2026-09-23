@@ -11,6 +11,9 @@ export interface ItemLoja {
     raridade: string;
 }
 
+export const calcularNivelRebirth = (rebirths: number = 0) => Math.floor(34 + (rebirths * 1.55));
+export const calcularMultiplicadorRebirth = (rebirths: number = 0) => 1 + (0.15 * rebirths);
+
 export const calcularValorVenda = (galo: Galo): { valor: number, moeda: "moedas" | "galo_coins" } => {
     const raridade = GALOS_DB[galo.nome]?.raridade || "Common";
     let base = 0;
@@ -56,6 +59,7 @@ export interface JogadorState {
     alterarSkillSlot: (galoIndex: number, slotIndex: number, novaSkillNome: string | null) => void;
     venderGalo: (galoIndex: number) => void;
     setAutoRevive: (valor: boolean) => void;
+    darRebirth: (galoIndex: number) => void;
 }
 
 // O middleware persist salva o estado automaticamente no localStorage.

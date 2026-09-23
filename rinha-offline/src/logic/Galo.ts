@@ -1,3 +1,4 @@
+import { calcularMultiplicadorRebirth } from '../store/jogadorStore';
 import { GALOS_DB } from '../data/galosDb';
 import type { Skill } from '../data/galosDb';
 import { EFEITOS_INICIO_TURNO, EFEITOS_DANO_RECEBIDO } from './efeitos';
@@ -18,6 +19,7 @@ export class Galo {
     hp_atual: number;
     caminho_imagem: string;
     skills_equipadas: (Skill | null)[];
+    rebirths: number;
     efeitos: Record<string, number>;
 
     constructor(
@@ -28,7 +30,8 @@ export class Galo {
         xp: number = 0,
         tipo: string = "Normal",
         skills_equipadas: (Skill | null)[] | null = null,
-        efeitos: Record<string, number> | null = null
+        efeitos: Record<string, number> | null = null,
+        rebirths: number = 0
     ) {
         this.nome = nome;
         this.tipo = tipo;
@@ -39,6 +42,7 @@ export class Galo {
         this.caminho_imagem = caminho_imagem;
         this.skills_equipadas = skills_equipadas ?? [];
         this.efeitos = efeitos ?? {};
+        this.rebirths = rebirths;
     }
 
     obterSkillsDesbloqueadas(): { level: number, skill: Skill }[] {
@@ -185,7 +189,7 @@ export class Galo {
         while (this.xp >= xpNecessario) {
             this.xp -= xpNecessario;
             this.nivel += 1;
-            this.hp_max += 12;
+            this.hp_max += Math.floor(12 * calcularMultiplicadorRebirth(this.rebirths));
             this.hp_atual = this.hp_max;
             
             if (GALOS_DB[this.nome]) {
@@ -219,7 +223,8 @@ export class Galo {
             nivel: this.nivel,
             xp: this.xp,
             skills_equipadas: this.skills_equipadas,
-            efeitos: this.efeitos
+            efeitos: this.efeitos,
+            rebirths: this.rebirths
         };
     }
 
@@ -237,7 +242,8 @@ export class Galo {
             data.xp ?? 0,
             data.tipo ?? "Normal",
             skills_equipadas,
-            data.efeitos ? { ...data.efeitos } : {}
+            data.efeitos ? { ...data.efeitos } : {},
+            data.rebirths ?? 0
         );
     }
 }
