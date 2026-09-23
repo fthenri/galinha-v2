@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import codecs
+import re
+
+hub_code = """import { useState } from 'react';
 import { useJogadorStore } from '../store/jogadorStore';
 import ModoTreino from './ModoTreino';
 import ModoTrial from './ModoTrial';
@@ -16,7 +19,7 @@ export default function Rinha() {
     const trialsAtual = useJogadorStore.getState().trialsPorClasse[meuGalo.nome] || 0;
 
     const handleModoClick = (modo: string) => {
-        if (modo === 'Raid' || modo === 'Dungeon' || modo === 'Arena' || modo === 'Survival') {
+        if (modo === 'Dungeon' || modo === 'Arena' || modo === 'Survival') {
             setModalInfo({
                 titulo: 'Apenas um vislumbre...',
                 texto: 'Os ventos sussurram sobre novos desafios se formando no horizonte. Esta área estará acessível em futuras atualizações.'
@@ -32,6 +35,8 @@ export default function Rinha() {
             }
         } else if (modo === 'Treino') {
             setModoAtivo('treino');
+        } else if (modo === 'Raid') {
+            setModoAtivo('raid');
         }
     };
 
@@ -39,7 +44,7 @@ export default function Rinha() {
         return (
             <div className="w-full flex flex-col items-center">
                 <button onClick={() => setModoAtivo(null)} className="mb-4 bg-zinc-800 text-white font-bold py-2 px-4 rounded-lg hover:bg-zinc-700 w-full max-w-4xl mt-6 text-left">← Abandonar Batalha</button>
-                <ModoTreino jogador={meuGalo} />
+                <ModoTreino />
             </div>
         );
     }
@@ -48,12 +53,19 @@ export default function Rinha() {
         return (
             <div className="w-full flex flex-col items-center">
                 <button onClick={() => setModoAtivo(null)} className="mb-4 bg-zinc-800 text-white font-bold py-2 px-4 rounded-lg hover:bg-zinc-700 w-full max-w-4xl mt-6 text-left">← Abandonar Batalha</button>
-                <ModoTrial jogador={meuGalo} />
+                <ModoTrial />
             </div>
         );
     }
 
-    
+    if (modoAtivo === 'raid') {
+        return (
+            <div className="w-full flex flex-col items-center">
+                <button onClick={() => setModoAtivo(null)} className="mb-4 bg-zinc-800 text-white font-bold py-2 px-4 rounded-lg hover:bg-zinc-700 w-full max-w-4xl mt-6 text-left">← Abandonar Batalha</button>
+                <div className="text-center text-zinc-400 p-8">Raid em construção...</div>
+            </div>
+        );
+    }
 
     return (
         <div className="p-6 flex flex-col items-center max-w-4xl mx-auto w-full">
@@ -88,3 +100,10 @@ export default function Rinha() {
         </div>
     );
 }
+"""
+
+with codecs.open('src/components/Rinha.tsx', 'w', 'utf-8') as f:
+    f.write(hub_code)
+
+print("Done Hub")
+

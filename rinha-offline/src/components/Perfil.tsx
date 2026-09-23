@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useJogadorStore, calcularNivelRebirth, calcularBonusTrial, calcularNivelInimigoTrial } from '../store/jogadorStore';
+import { useJogadorStore, calcularNivelRebirth, calcularBonusTrial } from '../store/jogadorStore';
 import { Galo } from '../logic/Galo';
 import { GALOS_DB } from '../data/galosDb';
 import { META_TIPOS } from '../data/tiposDb';
