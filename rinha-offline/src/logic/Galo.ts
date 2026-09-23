@@ -22,6 +22,7 @@ export class Galo {
     rebirths: number;
     evolucao_desbloqueada?: boolean;
     efeitos: Record<string, number>;
+    item_equipado?: string;
 
     constructor(
         nome: string,

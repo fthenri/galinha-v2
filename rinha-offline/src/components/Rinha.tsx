@@ -9,6 +9,55 @@ const PESOS_RARIDADE: Record<string, number> = {
     Common: 1, Rare: 2, Epic: 3, Legendary: 4, Mythic: 5, Divine: 6
 };
 
+type ConfigDificuldade = {
+    cor: string;
+    texto: string;
+    calcNivel: (nivelBase: number) => number;
+    calcRebirths: (rebirthsJogador: number) => number;
+    inimigoEvoluido?: boolean;
+    calcXp: (xpBase: number) => number;
+};
+
+const CONFIG_DIFICULDADE: Record<string, ConfigDificuldade> = {
+    Facil: {
+        cor: 'text-green-500',
+        texto: 'Todos os galos são um nível a menos',
+        calcNivel: (n) => Math.max(1, n - 1),
+        calcRebirths: () => 0,
+        calcXp: (xp) => xp
+    },
+    Medio: {
+        cor: 'text-yellow-500',
+        texto: 'Mesmo nível que o seu, com 1/3 dos resets. Benefícios: 30% de XP extra e +1 de XP fixo',
+        calcNivel: (n) => n,
+        calcRebirths: (r) => Math.floor(r / 3),
+        calcXp: (xp) => xp * 1.3 + 1
+    },
+    Dificil: {
+        cor: 'text-orange-500',
+        texto: 'Galo com 40% a mais de nível, metade dos seus resets +2. Benefícios: 60% de XP extra e +2 de XP fixo',
+        calcNivel: (n) => Math.floor(n * 1.4),
+        calcRebirths: (r) => Math.floor(r / 2) + 2,
+        calcXp: (xp) => xp * 1.6 + 2
+    },
+    Extremo: {
+        cor: 'text-red-500',
+        texto: '2x a mais de nível, metade dos seus resets +8, ataque evoluído. Benefícios: 80% de XP extra, +5 de XP fixo',
+        calcNivel: (n) => n * 2,
+        calcRebirths: (r) => Math.floor(r / 2) + 8,
+        inimigoEvoluido: true,
+        calcXp: (xp) => xp * 1.8 + 5
+    },
+    Insano: {
+        cor: 'text-purple-500',
+        texto: '3x a mais de nível, seus resets +20, ataque evoluído. Benefícios: 165% de XP extra, +8 de XP fixo',
+        calcNivel: (n) => n * 3,
+        calcRebirths: (r) => r + 20,
+        inimigoEvoluido: true,
+        calcXp: (xp) => xp * 2.65 + 8
+    }
+};
+
 export default function Rinha() {
     const galos = useJogadorStore(s => s.galos);
     const galoAtivoIndex = useJogadorStore(s => s.galoAtivoIndex);
@@ -32,6 +81,7 @@ export default function Rinha() {
     const [log, setLog] = useState<string[]>(["Procurando oponente..."]);
     const [inimigo, setInimigo] = useState<Galo | null>(null);
     const [treinoEncerrado, setTreinoEncerrado] = useState(false);
+    const [modalDificuldadeOpen, setModalDificuldadeOpen] = useState(false);
     
     // ReferÃªncias para o loop assÃ­ncrono
     const isMounted = useRef(true);
@@ -98,32 +148,29 @@ export default function Rinha() {
             const dadosInimigo = GALOS_DB[nomeSorteado];
             const pesoInimigo = PESOS_RARIDADE[dadosInimigo.raridade || "Common"] || 1;
 
-            let nivelInimigo = nivelBase;
-            let multXp = 1.0;
-            let bonusXp = 0;
-
-            if (dificuldade === "Facil") {
-                nivelInimigo = Math.max(1, nivelBase - 1);
-                if (pesoInimigo > pesoJogador) {
-                    nivelInimigo = Math.max(1, nivelInimigo - (pesoInimigo - pesoJogador));
-                }
-                multXp = 1.0; bonusXp = 0;
-            } else if (dificuldade === "Medio") {
-                multXp = 1.30; bonusXp = 1;
-            } else if (dificuldade === "Dificil") {
-                nivelInimigo = Math.floor(nivelBase * 1.40);
-                multXp = 1.60; bonusXp = 2;
-            } else if (dificuldade === "Extremo") {
-                nivelInimigo = nivelBase * 2;
-                multXp = 1.80; bonusXp = 5;
-            } else if (dificuldade === "Insano") {
-                nivelInimigo = nivelBase * 3;
-                multXp = 2.65; bonusXp = 8;
+            const configDif = CONFIG_DIFICULDADE[dificuldade] || CONFIG_DIFICULDADE.Facil;
+            let nivelInimigo = configDif.calcNivel(nivelBase);
+            if (dificuldade === "Facil" && pesoInimigo > pesoJogador) {
+                nivelInimigo = Math.max(1, nivelInimigo - (pesoInimigo - pesoJogador));
             }
+            const rebirthsInimigo = configDif.calcRebirths(meuGalo.rebirths || 0);
 
-            const hpInimigo = dadosInimigo.hp_base + ((nivelInimigo - 1) * 12);
-            const novoInimigo = new Galo(nomeSorteado, hpInimigo, dadosInimigo.caminho_imagem, nivelInimigo, 0, dadosInimigo.tipo);
-            novoInimigo.hp_atual = hpInimigo;
+            const hpInimigoSemRebirth = dadosInimigo.hp_base + ((nivelInimigo - 1) * 12);
+            const hpInimigoComRebirth = Math.floor(hpInimigoSemRebirth * calcularMultiplicadorRebirth(rebirthsInimigo));
+
+            const novoInimigo = new Galo(
+                nomeSorteado, 
+                hpInimigoComRebirth, 
+                dadosInimigo.caminho_imagem, 
+                nivelInimigo, 
+                0, 
+                dadosInimigo.tipo,
+                null,
+                null,
+                rebirthsInimigo,
+                configDif.inimigoEvoluido || false
+            );
+            novoInimigo.hp_atual = hpInimigoComRebirth;
             
             // @ts-ignore
             novoInimigo.equiparSkillsBot();
@@ -221,7 +268,8 @@ export default function Rinha() {
 
             if (meuGalo.hp_atual > 0) {
                 const xpBase = 34;
-                const xpGanho = Math.floor((xpBase * multXp) + bonusXp);
+                const configDif = CONFIG_DIFICULDADE[difRinhaRef.current] || CONFIG_DIFICULDADE.Facil;
+                const xpGanho = Math.floor(configDif.calcXp(xpBase));
                 const moedasGanhas = 6;
 
                 meuGalo.ganharXp(xpGanho);
@@ -295,17 +343,13 @@ export default function Rinha() {
 
                 <div className="flex flex-col w-40">
                     <label className="text-sm text-zinc-400 mb-1 font-semibold">Dificuldade</label>
-                    <select 
-                        value={difRinha} 
-                        onChange={e => setDifRinha(e.target.value)}
-                        className="bg-zinc-800 border border-zinc-700 text-zinc-200 text-sm rounded-lg focus:ring-amber-500 focus:outline-none block w-full p-2.5 cursor-pointer"
+                    <button
+                        onClick={() => setModalDificuldadeOpen(true)}
+                        className="bg-zinc-800 border border-zinc-700 text-zinc-200 p-2.5 rounded-lg w-full flex justify-between items-center hover:bg-zinc-700 transition-colors"
                     >
-                        <option value="Facil">Fácil</option>
-                        <option value="Medio">Médio</option>
-                        <option value="Dificil">Difícil</option>
-                        <option value="Extremo">Extremo</option>
-                        <option value="Insano">Insano</option>
-                    </select>
+                        <span>Dificuldade: {difRinha}</span>
+                        <span className="text-zinc-500">▼</span>
+                    </button>
                 </div>
 
                 <div className="flex flex-col justify-center items-center px-4 pt-6">
@@ -419,6 +463,42 @@ export default function Rinha() {
                 >
                     Treinar Novamente
                 </button>
+            )}
+
+            {/* Modal de Seleção de Dificuldade */}
+            {modalDificuldadeOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+                    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-full max-w-md flex flex-col">
+                        <h3 className="text-xl font-bold text-zinc-100 mb-4 text-center">Train difficulty</h3>
+                        
+                        <div className="flex flex-wrap gap-3 justify-center mb-6">
+                            {Object.keys(CONFIG_DIFICULDADE).map((dificuldadeKey) => (
+                                <button
+                                    key={dificuldadeKey}
+                                    onClick={() => setDifRinha(dificuldadeKey)}
+                                    className={`py-2 px-4 rounded-lg font-bold transition-all ${
+                                        difRinha === dificuldadeKey 
+                                        ? 'bg-zinc-800 ring-2 ring-amber-500 text-white' 
+                                        : 'bg-zinc-900 opacity-70 text-zinc-400 hover:opacity-100 border border-zinc-700'
+                                    }`}
+                                >
+                                    {dificuldadeKey}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="text-sm text-zinc-300 mt-2 bg-zinc-950 p-4 rounded-lg border border-zinc-800 text-center">
+                            {CONFIG_DIFICULDADE[difRinha]?.texto}
+                        </div>
+
+                        <button 
+                            onClick={() => setModalDificuldadeOpen(false)}
+                            className="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2 rounded-lg mt-6 transition-colors"
+                        >
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
             )}
 
         </div>

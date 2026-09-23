@@ -61,6 +61,7 @@ export interface JogadorState {
     setAutoRevive: (valor: boolean) => void;
     darRebirth: (galoIndex: number) => void;
     desbloquearEvolucao: (galoIndex: number) => void;
+    equiparItem: (galoIndex: number, itemId: string | null) => void;
 }
 
 // O middleware persist salva o estado automaticamente no localStorage.
@@ -202,6 +203,15 @@ export const useJogadorStore = create<JogadorState>()(
                         }
                     }
                     return { galos, galoCoins: novoGaloCoins };
+                }
+                return { galos };
+            }),
+            equiparItem: (galoIndex, itemId) => set((state) => {
+                const galos = [...state.galos];
+                if (itemId === null) {
+                    delete galos[galoIndex].item_equipado;
+                } else {
+                    galos[galoIndex].item_equipado = itemId;
                 }
                 return { galos };
             })

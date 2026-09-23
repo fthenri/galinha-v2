@@ -4,8 +4,11 @@ import { Galo } from '../logic/Galo';
 import { GALOS_DB } from '../data/galosDb';
 import { META_TIPOS } from '../data/tiposDb';
 
-function GaloCard({ galo, galoIndex, isAtivo, onEquipar, onOpenEvolucao, onOpenRebirth }: { galo: Galo, galoIndex: number, isAtivo: boolean, onEquipar: () => void, onOpenEvolucao: (idx: number) => void, onOpenRebirth: (idx: number) => void }) {
+import { ITENS_DB } from '../data/itensDb';
+
+function GaloCard({ galo, galoIndex, isAtivo, onEquipar, onOpenEvolucao, onOpenRebirth, onOpenItem }: { galo: Galo, galoIndex: number, isAtivo: boolean, onEquipar: () => void, onOpenEvolucao: (idx: number) => void, onOpenRebirth: (idx: number) => void, onOpenItem: (idx: number) => void }) {
   const alterarSkillSlot = useJogadorStore(s => s.alterarSkillSlot);
+  const equiparItem = useJogadorStore(s => s.equiparItem);
   const desbloqueadas = [...galo.obterSkillsDesbloqueadas()].sort((a, b) => a.level - b.level);
   
   const handleSelectChange = (slotIndex: number, val: string) => {
@@ -19,6 +22,16 @@ function GaloCard({ galo, galoIndex, isAtivo, onEquipar, onOpenEvolucao, onOpenR
 
   let borderClass = "";
   let glowClass = "";
+  let itemRarityColor = "text-zinc-400";
+
+  const itemObj = galo.item_equipado ? ITENS_DB?.[galo.item_equipado] : null;
+  if (itemObj) {
+    if (itemObj.raridade === "Rare") itemRarityColor = "text-blue-500";
+    else if (itemObj.raridade === "Epic") itemRarityColor = "text-purple-500";
+    else if (itemObj.raridade === "Legendary") itemRarityColor = "text-orange-500";
+    else if (itemObj.raridade === "Special") itemRarityColor = "text-red-500";
+    else if (itemObj.raridade === "Mythic") itemRarityColor = "text-fuchsia-500";
+  }
 
   switch (raridade) {
     case "Rare":
@@ -76,6 +89,31 @@ function GaloCard({ galo, galoIndex, isAtivo, onEquipar, onOpenEvolucao, onOpenR
       </button>
 
       <hr className="w-full border-zinc-700 mb-4" />
+      
+      <h4 className="text-sm font-bold mb-4">EQUIPAMENTO</h4>
+      {itemObj ? (
+        <div className="flex items-center justify-between bg-zinc-900 border border-zinc-700 p-3 rounded-lg w-full mb-6">
+          <div className="flex flex-col text-left">
+            <span className={`font-bold ${itemRarityColor}`}>{itemObj.nome}</span>
+            <span className="text-xs text-zinc-500">{itemObj.raridade}</span>
+            <span className="text-xs text-zinc-400 mt-1.5 leading-snug">{itemObj.descricao}</span>
+          </div>
+          <button 
+            onClick={() => equiparItem(galoIndex, null)}
+            className="text-zinc-500 hover:text-red-500 transition-colors font-bold text-lg px-2"
+          >
+            ✕
+          </button>
+        </div>
+      ) : (
+        <button 
+          onClick={() => onOpenItem(galoIndex)}
+          className="border-2 border-dashed border-zinc-700 text-zinc-500 hover:text-zinc-300 hover:border-zinc-500 p-3 rounded-lg w-full mb-6 transition-colors"
+        >
+          + Equipar Item
+        </button>
+      )}
+
       <h4 className="text-sm font-bold mb-4">HABILIDADES EQUIPADAS</h4>
 
       <div className="flex flex-col gap-2 w-full">
@@ -141,6 +179,7 @@ export default function Perfil() {
   const { nome, moedas, galoCoins, galos, galoAtivoIndex, setGaloAtivo } = useJogadorStore();
   const [modalEvolucao, setModalEvolucao] = useState<number | null>(null);
   const [modalRebirth, setModalRebirth] = useState<number | null>(null);
+  const [modalItemGaloIndex, setModalItemGaloIndex] = useState<number | null>(null);
 
   return (
     <div className="p-6 flex flex-col items-center">
@@ -163,6 +202,7 @@ export default function Perfil() {
             onEquipar={() => setGaloAtivo(idx)}
             onOpenEvolucao={setModalEvolucao}
             onOpenRebirth={setModalRebirth}
+            onOpenItem={setModalItemGaloIndex}
           />
         ))}
 
@@ -248,6 +288,49 @@ export default function Perfil() {
           </div>
         </div>
       )}
+
+      {modalItemGaloIndex !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+          <div className="bg-zinc-900 border border-zinc-700 p-6 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-white">Selecione um Item (Modo Teste)</h2>
+              <button 
+                onClick={() => setModalItemGaloIndex(null)}
+                className="text-zinc-500 hover:text-white font-bold text-xl px-2"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-2 flex-1 max-h-[70vh]">
+              {Object.entries(ITENS_DB || {}).map(([id, item]) => {
+                let itemRarityColor = "text-zinc-400";
+                if (item.raridade === "Rare") itemRarityColor = "text-blue-500";
+                else if (item.raridade === "Epic") itemRarityColor = "text-purple-500";
+                else if (item.raridade === "Legendary") itemRarityColor = "text-orange-500";
+                else if (item.raridade === "Special") itemRarityColor = "text-red-500";
+                else if (item.raridade === "Mythic") itemRarityColor = "text-fuchsia-500";
+
+                return (
+                  <button
+                    key={id}
+                    onClick={() => {
+                      useJogadorStore.getState().equiparItem(modalItemGaloIndex, id);
+                      setModalItemGaloIndex(null);
+                    }}
+                    className="flex flex-col bg-zinc-800 border border-zinc-700 hover:border-zinc-500 p-4 rounded-xl transition-all text-left"
+                  >
+                    <span className={`font-bold text-lg mb-1 ${itemRarityColor}`}>{item.nome}</span>
+                    <span className="text-xs text-zinc-500 font-semibold">{item.raridade}</span>
+                    <span className="text-xs text-zinc-400 mt-1.5 leading-snug">{item.descricao}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
       </div>
     </div>
   );
