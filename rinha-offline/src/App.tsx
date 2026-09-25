@@ -39,7 +39,7 @@ export default function App() {
           className={`flex flex-col items-center justify-center w-full h-full ${activeTab === 'treino' ? 'text-amber-500' : 'text-zinc-400 hover:text-zinc-300'}`}
         >
           <Swords size={24} />
-          <span className="text-xs mt-1">Treino</span>
+          <span className="text-xs mt-1">Rinha</span>
         </button>
         <button 
           onClick={() => setActiveTab('loja')}

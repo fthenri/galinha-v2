@@ -53,22 +53,44 @@ export default function Rinha() {
         );
     }
 
-    
-
     return (
         <div className="p-6 flex flex-col items-center max-w-4xl mx-auto w-full">
             <h2 className="text-3xl font-bold mb-8 text-white">Hub de Batalhas</h2>
             
-            <div className="flex flex-col gap-4 w-full max-w-md">
-                {['Trial', 'Treino', 'Raid', 'Dungeon', 'Arena', 'Survival'].map((modo) => (
-                    <button 
-                        key={modo}
-                        onClick={() => handleModoClick(modo)}
-                        className="bg-zinc-800 border border-zinc-700 hover:border-zinc-500 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg text-lg uppercase tracking-widest text-center w-full"
-                    >
-                        {modo}
-                    </button>
-                ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl px-4 mt-8">
+                <button onClick={() => handleModoClick('Trial')} className="bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700 rounded-2xl p-6 text-left flex flex-col justify-start transition-all duration-200 shadow-lg group">
+                    <h3 className="text-xl font-black text-zinc-100 uppercase tracking-wider group-hover:text-amber-500 transition-colors">TRIAL</h3>
+                    <p className="text-sm text-zinc-400 mt-3 leading-relaxed">Enfrente provações exclusivas da sua classe para obter bônus globais de atributos.</p>
+                </button>
+
+                <button onClick={() => handleModoClick('Treino')} className="bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700 rounded-2xl p-6 text-left flex flex-col justify-start transition-all duration-200 shadow-lg group">
+                    <h3 className="text-xl font-black text-zinc-100 uppercase tracking-wider group-hover:text-amber-500 transition-colors">TREINO</h3>
+                    <p className="text-sm text-zinc-400 mt-3 leading-relaxed">Batalhas infinitas e casuais para ganhar XP, subir de nível e farmar moedas.</p>
+                </button>
+
+                <button onClick={() => handleModoClick('Raid')} className="bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700 rounded-2xl p-6 text-left flex flex-col justify-start transition-all duration-200 shadow-lg group opacity-75 hover:opacity-100">
+                    <h3 className="text-xl font-black text-zinc-100 uppercase tracking-wider group-hover:text-amber-500 transition-colors">RAID</h3>
+                    <p className="text-sm text-zinc-400 mt-3 leading-relaxed">Desafie chefões colossais em batalhas extremas para saques raros.</p>
+                    <div className="mt-5 inline-block bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider w-max">Em breve</div>
+                </button>
+                
+                <button onClick={() => handleModoClick('Dungeon')} className="bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700 rounded-2xl p-6 text-left flex flex-col justify-start transition-all duration-200 shadow-lg group opacity-75 hover:opacity-100">
+                    <h3 className="text-xl font-black text-zinc-100 uppercase tracking-wider group-hover:text-amber-500 transition-colors">DUNGEON</h3>
+                    <p className="text-sm text-zinc-400 mt-3 leading-relaxed">Explore masmorras profundas e enfrente ondas perigosas de inimigos.</p>
+                    <div className="mt-5 inline-block bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider w-max">Em breve</div>
+                </button>
+
+                <button onClick={() => handleModoClick('Arena')} className="bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700 rounded-2xl p-6 text-left flex flex-col justify-start transition-all duration-200 shadow-lg group opacity-75 hover:opacity-100">
+                    <h3 className="text-xl font-black text-zinc-100 uppercase tracking-wider group-hover:text-amber-500 transition-colors">ARENA</h3>
+                    <p className="text-sm text-zinc-400 mt-3 leading-relaxed">Prove o seu valor contra as equipas de outros jogadores.</p>
+                    <div className="mt-5 inline-block bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider w-max">Em breve</div>
+                </button>
+
+                <button onClick={() => handleModoClick('Survival')} className="bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700 rounded-2xl p-6 text-left flex flex-col justify-start transition-all duration-200 shadow-lg group opacity-75 hover:opacity-100">
+                    <h3 className="text-xl font-black text-zinc-100 uppercase tracking-wider group-hover:text-amber-500 transition-colors">SURVIVAL</h3>
+                    <p className="text-sm text-zinc-400 mt-3 leading-relaxed">Sobreviva o máximo que puder contra hordas infinitas e implacáveis.</p>
+                    <div className="mt-5 inline-block bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider w-max">Em breve</div>
+                </button>
             </div>
 
             {modalInfo !== null && (
